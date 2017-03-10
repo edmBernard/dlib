@@ -60,7 +60,7 @@ boost::python::list vector_to_python_list (
 // ----------------------------------------------------------------------------------------
 
 template <typename T>
-boost::shared_ptr<T> load_object_from_file (
+std::shared_ptr<T> load_object_from_file (
     const std::string& filename
 )
 /*!
@@ -71,7 +71,7 @@ boost::shared_ptr<T> load_object_from_file (
     std::ifstream fin(filename.c_str(), std::ios::binary);
     if (!fin)
         throw dlib::error("Unable to open " + filename);
-    boost::shared_ptr<T> obj(new T());
+    std::shared_ptr<T> obj(new T());
     deserialize(*obj, fin);
     return obj;
 }

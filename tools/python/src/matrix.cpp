@@ -2,7 +2,7 @@
 // License: Boost Software License   See LICENSE.txt for the full license.
 
 #include <dlib/python.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <dlib/matrix.h>
 #include <dlib/string.h>
 #include <boost/python/args.hpp>
@@ -34,7 +34,7 @@ string matrix_double__str__(matrix<double>& c)
     return trim(sout.str());
 }
 
-boost::shared_ptr<matrix<double> > make_matrix_from_size(long nr, long nc)
+std::shared_ptr<matrix<double> > make_matrix_from_size(long nr, long nc)
 {
     if (nr < 0 || nc < 0)
     {
@@ -42,13 +42,13 @@ boost::shared_ptr<matrix<double> > make_matrix_from_size(long nr, long nc)
         );                                            
         boost::python::throw_error_already_set();   
     }
-    boost::shared_ptr<matrix<double> > temp(new matrix<double>(nr,nc));
+    std::shared_ptr<matrix<double> > temp(new matrix<double>(nr,nc));
     *temp = 0;
     return temp;
 }
 
 
-boost::shared_ptr<matrix<double> > from_object(object obj)
+std::shared_ptr<matrix<double> > from_object(object obj)
 {
     tuple s = extract<tuple>(obj.attr("shape"));
     if (len(s) != 2)
@@ -60,7 +60,7 @@ boost::shared_ptr<matrix<double> > from_object(object obj)
 
     const long nr = extract<long>(s[0]);
     const long nc = extract<long>(s[1]);
-    boost::shared_ptr<matrix<double> > temp(new matrix<double>(nr,nc));
+    std::shared_ptr<matrix<double> > temp(new matrix<double>(nr,nc));
     for ( long r = 0; r < nr; ++r)
     {
         for (long c = 0; c < nc; ++c)
@@ -71,7 +71,7 @@ boost::shared_ptr<matrix<double> > from_object(object obj)
     return temp;
 }
 
-boost::shared_ptr<matrix<double> > from_list(list l)
+std::shared_ptr<matrix<double> > from_list(list l)
 {
     const long nr = len(l);
     if (extract<list>(l[0]).check())
@@ -82,7 +82,7 @@ boost::shared_ptr<matrix<double> > from_list(list l)
             pyassert(len(l[r]) == nc, "All rows of a matrix must have the same number of columns.");
 
 
-        boost::shared_ptr<matrix<double> > temp(new matrix<double>(nr,nc));
+        std::shared_ptr<matrix<double> > temp(new matrix<double>(nr,nc));
         for ( long r = 0; r < nr; ++r)
         {
             for (long c = 0; c < nc; ++c)
@@ -95,7 +95,7 @@ boost::shared_ptr<matrix<double> > from_list(list l)
     else
     {
         // In this case we treat it like a column vector
-        boost::shared_ptr<matrix<double> > temp(new matrix<double>(nr,1));
+        std::shared_ptr<matrix<double> > temp(new matrix<double>(nr,1));
         for ( long r = 0; r < nr; ++r)
         {
             (*temp)(r) = extract<double>(l[r]);

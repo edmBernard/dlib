@@ -7,7 +7,7 @@
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <boost/python/suite/indexing/indexing_suite.hpp>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include <dlib/string.h>
 
@@ -16,19 +16,19 @@ using namespace dlib;
 using namespace boost::python;
 
 
-boost::shared_ptr<std::vector<double> > array_from_object(object obj)
+std::shared_ptr<std::vector<double> > array_from_object(object obj)
 {
     extract<long> thesize(obj);
     if (thesize.check())
     {
         long nr = thesize;
-        boost::shared_ptr<std::vector<double> > temp(new std::vector<double>(nr));
+        std::shared_ptr<std::vector<double> > temp(new std::vector<double>(nr));
         return temp;
     }
     else
     {
         const long nr = len(obj);
-        boost::shared_ptr<std::vector<double> > temp(new std::vector<double>(nr));
+        std::shared_ptr<std::vector<double> > temp(new std::vector<double>(nr));
         for ( long r = 0; r < nr; ++r)
         {
             (*temp)[r] = extract<double>(obj[r]);

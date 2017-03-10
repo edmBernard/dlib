@@ -3,7 +3,7 @@
 
 #include <dlib/python.h>
 #include "testing_results.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/python/args.hpp>
 #include <dlib/svm.h>
 

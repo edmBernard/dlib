@@ -68,7 +68,7 @@ std::vector<point> full_obj_det_parts (const full_object_detection& detection)
     return parts;
 }
 
-boost::shared_ptr<full_object_detection> full_obj_det_init(object& pyrect, object& pyparts)
+std::shared_ptr<full_object_detection> full_obj_det_init(object& pyrect, object& pyparts)
 {
     const unsigned long num_parts = len(pyparts);
     std::vector<point> parts(num_parts);
@@ -77,7 +77,7 @@ boost::shared_ptr<full_object_detection> full_obj_det_init(object& pyrect, objec
     for (unsigned long j = 0; j < num_parts; ++j)
         parts[j] = extract<point>(pyparts[j]);
 
-    return boost::shared_ptr<full_object_detection>(new full_object_detection(rect, parts));
+    return std::shared_ptr<full_object_detection>(new full_object_detection(rect, parts));
 }
 
 // ----------------------------------------------------------------------------------------

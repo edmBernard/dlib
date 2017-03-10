@@ -2,7 +2,7 @@
 // License: Boost Software License   See LICENSE.txt for the full license.
 
 #include <dlib/python.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <dlib/matrix.h>
 #include <dlib/data_io.h>
 #include <dlib/sparse_vector.h>

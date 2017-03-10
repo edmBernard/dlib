@@ -2,7 +2,7 @@
 // License: Boost Software License   See LICENSE.txt for the full license.
 
 #include <dlib/python.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <dlib/matrix.h>
 #include <boost/python/slice.hpp>
 #include <dlib/geometry/vector.h>
@@ -52,20 +52,20 @@ string cv__repr__ (const cv& v)
     return sout.str();
 }
 
-boost::shared_ptr<cv> cv_from_object(object obj)
+std::shared_ptr<cv> cv_from_object(object obj)
 {
     extract<long> thesize(obj);
     if (thesize.check())
     {
         long nr = thesize;
-        boost::shared_ptr<cv> temp(new cv(nr));
+        std::shared_ptr<cv> temp(new cv(nr));
         *temp = 0;
         return temp;
     }
     else
     {
         const long nr = len(obj);
-        boost::shared_ptr<cv> temp(new cv(nr));
+        std::shared_ptr<cv> temp(new cv(nr));
         for ( long r = 0; r < nr; ++r)
         {
             (*temp)(r) = extract<double>(obj[r]);

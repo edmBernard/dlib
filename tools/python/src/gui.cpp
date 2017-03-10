@@ -73,16 +73,16 @@ void add_overlay_parts (
     win.add_overlay(render_face_detections(detection, color));
 }
 
-boost::shared_ptr<image_window> make_image_window_from_image(object img)
+std::shared_ptr<image_window> make_image_window_from_image(object img)
 {
-    boost::shared_ptr<image_window> win(new image_window);
+    std::shared_ptr<image_window> win(new image_window);
     image_window_set_image(*win, img);
     return win;
 }
 
-boost::shared_ptr<image_window> make_image_window_from_image_and_title(object img, const string& title)
+std::shared_ptr<image_window> make_image_window_from_image_and_title(object img, const string& title)
 {
-    boost::shared_ptr<image_window> win(new image_window);
+    std::shared_ptr<image_window> win(new image_window);
     image_window_set_image(*win, img);
     win->set_title(title);
     return win;
