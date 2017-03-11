@@ -85,7 +85,7 @@ inline simple_test_results test_simple_object_detector_py_with_images_py (
 // ----------------------------------------------------------------------------------------
 
 inline void find_candidate_object_locations_py (
-    object pyimage,
+    boost::python::object pyimage,
     boost::python::list& pyboxes,
     boost::python::tuple pykvals,
     unsigned long min_size,
@@ -104,9 +104,9 @@ inline void find_candidate_object_locations_py (
     if (boost::python::len(pykvals) != 3)
         throw dlib::error("kvals must be a tuple with three elements for start, end, num.");
 
-    double start = extract<double>(pykvals[0]);
-    double end   = extract<double>(pykvals[1]);
-    long num     = extract<long>(pykvals[2]);
+    double start = boost::python::extract<double>(pykvals[0]);
+    double end   = boost::python::extract<double>(pykvals[1]);
+    long num     = boost::python::extract<long>(pykvals[2]);
     matrix_range_exp<double> kvals = linspace(start, end, num);
 
     std::vector<rectangle> rects;
@@ -114,7 +114,7 @@ inline void find_candidate_object_locations_py (
     // Copy any rectangles in the input pyboxes into rects so that any rectangles will be
     // properly deduped in the resulting output.
     for (long i = 0; i < count; ++i)
-        rects.push_back(extract<rectangle>(pyboxes[i]));
+        rects.push_back(boost::python::extract<rectangle>(pyboxes[i]));
     // Find candidate objects
     find_candidate_object_locations(image, rects, kvals, min_size, max_merging_iterations);
 
@@ -128,10 +128,9 @@ inline void find_candidate_object_locations_py (
 
 void bind_object_detection()
 {
-    using boost::python::arg;
     {
     typedef simple_object_detector_training_options type;
-    class_<type>("simple_object_detector_training_options",
+    boost::python::class_<type>("simple_object_detector_training_options",
         "This object is a container for the options to the train_simple_object_detector() routine.")
         .add_property("be_verbose", &type::be_verbose,
                                     &type::be_verbose,
@@ -171,7 +170,7 @@ Values higher than 2 (default) are not recommended.");
     }
     {
     typedef simple_test_results type;
-    class_<type>("simple_test_results")
+    boost::python::class_<type>("simple_test_results")
         .add_property("precision", &type::precision)
         .add_property("recall", &type::recall)
         .add_property("average_precision", &type::average_precision)
@@ -180,9 +179,9 @@ Values higher than 2 (default) are not recommended.");
 
     // Here, kvals is actually the result of linspace(start, end, num) and it is different from kvals used
     // in find_candidate_object_locations(). See dlib/image_transforms/segment_image_abstract.h for more details.
-    def("find_candidate_object_locations", find_candidate_object_locations_py,
-            (arg("image"), arg("rects"), arg("kvals")=boost::python::make_tuple(50, 200, 3),
-             arg("min_size")=20, arg("max_merging_iterations")=50),
+    boost::python::def("find_candidate_object_locations", find_candidate_object_locations_py,
+            (boost::python::arg("image"), boost::python::arg("rects"), boost::python::arg("kvals")=boost::python::make_tuple(50, 200, 3),
+             boost::python::arg("min_size")=20, boost::python::arg("max_merging_iterations")=50),
 "Returns found candidate objects\n\
 requires\n\
     - image == an image object which is a numpy ndarray\n\
@@ -218,11 +217,11 @@ ensures\n\
       that:\n\
         - #rects[i] != rects[j]");
 
-    def("get_frontal_face_detector", get_frontal_face_detector,
+    boost::python::def("get_frontal_face_detector", get_frontal_face_detector,
         "Returns the default face detector");
 
-    def("train_simple_object_detector", train_simple_object_detector,
-        (arg("dataset_filename"), arg("detector_output_filename"), arg("options")),
+    boost::python::def("train_simple_object_detector", train_simple_object_detector,
+        (boost::python::arg("dataset_filename"), boost::python::arg("detector_output_filename"), boost::python::arg("options")),
 "requires \n\
     - options.C > 0 \n\
 ensures \n\
@@ -236,8 +235,8 @@ ensures \n\
       way to train a basic object detector.   \n\
     - The trained object detector is serialized to the file detector_output_filename.");
 
-    def("train_simple_object_detector", train_simple_object_detector_on_images_py,
-        (arg("images"), arg("boxes"), arg("options")),
+    boost::python::def("train_simple_object_detector", train_simple_object_detector_on_images_py,
+        (boost::python::arg("images"), boost::python::arg("boxes"), boost::python::arg("options")),
 "requires \n\
     - options.C > 0 \n\
     - len(images) == len(boxes) \n\
@@ -252,9 +251,9 @@ ensures \n\
       way to train a basic object detector.   \n\
     - The trained object detector is returned.");
 
-    def("test_simple_object_detector", test_simple_object_detector,
+    boost::python::def("test_simple_object_detector", test_simple_object_detector,
             // Please see test_simple_object_detector for the reason upsampling_amount is -1
-            (arg("dataset_filename"), arg("detector_filename"), arg("upsampling_amount")=-1),
+            (boost::python::arg("dataset_filename"), boost::python::arg("detector_filename"), boost::python::arg("upsampling_amount")=-1),
             "requires \n\
                 - Optionally, take the number of times to upsample the testing images (upsampling_amount >= 0). \n\
              ensures \n\
@@ -271,8 +270,8 @@ ensures \n\
                   metrics. "
         );
 
-    def("test_simple_object_detector", test_simple_object_detector_with_images_py,
-            (arg("images"), arg("boxes"), arg("detector"), arg("upsampling_amount")=0),
+    boost::python::def("test_simple_object_detector", test_simple_object_detector_with_images_py,
+            (boost::python::arg("images"), boost::python::arg("boxes"), boost::python::arg("detector"), boost::python::arg("upsampling_amount")=0),
             "requires \n\
                - len(images) == len(boxes) \n\
                - images should be a list of numpy matrices that represent images, either RGB or grayscale. \n\
@@ -290,9 +289,9 @@ ensures \n\
                  metrics. "
     );
 
-    def("test_simple_object_detector", test_simple_object_detector_py_with_images_py,
+    boost::python::def("test_simple_object_detector", test_simple_object_detector_py_with_images_py,
             // Please see test_simple_object_detector_py_with_images_py for the reason upsampling_amount is -1
-            (arg("images"), arg("boxes"), arg("detector"), arg("upsampling_amount")=-1),
+            (boost::python::arg("images"), boost::python::arg("boxes"), boost::python::arg("detector"), boost::python::arg("upsampling_amount")=-1),
             "requires \n\
                - len(images) == len(boxes) \n\
                - images should be a list of numpy matrices that represent images, either RGB or grayscale. \n\
@@ -310,13 +309,13 @@ ensures \n\
     );
     {
     typedef simple_object_detector type;
-    class_<type>("fhog_object_detector",
+    boost::python::class_<type>("fhog_object_detector",
         "This object represents a sliding window histogram-of-oriented-gradients based object detector.")
-        .def("__init__", make_constructor(&load_object_from_file<type>),  
+        .def("__init__", boost::python::make_constructor(&load_object_from_file<type>),  
 "Loads an object detector from a file that contains the output of the \n\
 train_simple_object_detector() routine or a serialized C++ object of type\n\
 object_detector<scan_fhog_pyramid<pyramid_down<6>>>.")
-        .def("__call__", run_detector_with_upscale2, (arg("image"), arg("upsample_num_times")=0),
+        .def("__call__", run_detector_with_upscale2, (boost::python::arg("image"), boost::python::arg("upsample_num_times")=0),
 "requires \n\
     - image is a numpy ndarray containing either an 8bit grayscale or RGB \n\
       image. \n\
@@ -326,7 +325,7 @@ ensures \n\
       a list of detections.   \n\
     - Upsamples the image upsample_num_times before running the basic \n\
       detector.")
-        .def("run", run_rect_detector, (arg("image"), arg("upsample_num_times")=0, arg("adjust_threshold")=0.0),
+        .def("run", run_rect_detector, (boost::python::arg("image"), boost::python::arg("upsample_num_times")=0, boost::python::arg("adjust_threshold")=0.0),
 "requires \n\
     - image is a numpy ndarray containing either an 8bit grayscale or RGB \n\
       image. \n\
@@ -336,7 +335,7 @@ ensures \n\
       a tuple of (list of detections, list of scores, list of weight_indices).   \n\
     - Upsamples the image upsample_num_times before running the basic \n\
       detector.")
-        .def("run_multiple", run_multiple_rect_detectors,(arg("detectors"),  arg("image"), arg("upsample_num_times")=0, arg("adjust_threshold")=0.0),
+        .def("run_multiple", run_multiple_rect_detectors,(boost::python::arg("detectors"),  boost::python::arg("image"), boost::python::arg("upsample_num_times")=0, boost::python::arg("adjust_threshold")=0.0),
 "requires \n\
     - detectors is a list of detectors. \n\
     - image is a numpy ndarray containing either an 8bit grayscale or RGB \n\
@@ -348,17 +347,17 @@ ensures \n\
     - Upsamples the image upsample_num_times before running the basic \n\
       detector.")
         .staticmethod("run_multiple")
-        .def("save", save_simple_object_detector, (arg("detector_output_filename")), "Save a simple_object_detector to the provided path.")
+        .def("save", save_simple_object_detector, (boost::python::arg("detector_output_filename")), "Save a simple_object_detector to the provided path.")
         .def_pickle(serialize_pickle<type>());
     }
     {
     typedef simple_object_detector_py type;
-    class_<type>("simple_object_detector",
+    boost::python::class_<type>("simple_object_detector",
         "This object represents a sliding window histogram-of-oriented-gradients based object detector.")
-        .def("__init__", make_constructor(&load_object_from_file<type>),
+        .def("__init__", boost::python::make_constructor(&load_object_from_file<type>),
 "Loads a simple_object_detector from a file that contains the output of the \n\
 train_simple_object_detector() routine.")
-        .def("__call__", &type::run_detector1, (arg("image"), arg("upsample_num_times"), arg("adjust_threshold")=0.0),
+        .def("__call__", &type::run_detector1, (boost::python::arg("image"), boost::python::arg("upsample_num_times"), boost::python::arg("adjust_threshold")=0.0),
 "requires \n\
     - image is a numpy ndarray containing either an 8bit grayscale or RGB \n\
       image. \n\
@@ -370,14 +369,14 @@ ensures \n\
       detector.  If you don't know how many times you want to upsample then \n\
       don't provide a value for upsample_num_times and an appropriate \n\
       default will be used.")
-        .def("__call__", &type::run_detector2, (arg("image")),
+        .def("__call__", &type::run_detector2, (boost::python::arg("image")),
 "requires \n\
     - image is a numpy ndarray containing either an 8bit grayscale or RGB \n\
       image. \n\
 ensures \n\
     - This function runs the object detector on the input image and returns \n\
       a list of detections.")
-        .def("save", save_simple_object_detector_py, (arg("detector_output_filename")), "Save a simple_object_detector to the provided path.")
+        .def("save", save_simple_object_detector_py, (boost::python::arg("detector_output_filename")), "Save a simple_object_detector to the provided path.")
         .def_pickle(serialize_pickle<type>());
     }
 }

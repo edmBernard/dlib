@@ -16,11 +16,11 @@ namespace py = pybind11;
 
 full_object_detection run_predictor (
         shape_predictor& predictor,
-        object img,
-        object rect
+        boost::python::object img,
+        boost::python::object rect
 )
 {
-    rectangle box = extract<rectangle>(rect);
+    rectangle box = boost::python::extract<rectangle>(rect);
     if (is_gray_python_image(img))
     {
         return predictor(numpy_gray_image(img), box);
@@ -68,14 +68,14 @@ std::vector<point> full_obj_det_parts (const full_object_detection& detection)
     return parts;
 }
 
-std::shared_ptr<full_object_detection> full_obj_det_init(object& pyrect, object& pyparts)
+std::shared_ptr<full_object_detection> full_obj_det_init(boost::python::object& pyrect, boost::python::object& pyparts)
 {
     const unsigned long num_parts = len(pyparts);
     std::vector<point> parts(num_parts);
-    rectangle rect = extract<rectangle>(pyrect);
+    rectangle rect = boost::python::extract<rectangle>(pyrect);
 
     for (unsigned long j = 0; j < num_parts; ++j)
-        parts[j] = extract<point>(pyparts[j]);
+        parts[j] = boost::python::extract<point>(pyparts[j]);
 
     return std::shared_ptr<full_object_detection>(new full_object_detection(rect, parts));
 }
@@ -126,7 +126,7 @@ inline double test_shape_predictor_with_images_py (
     {
         const unsigned long num_boxes = len(pydetections[i]);
         for (unsigned long j = 0; j < num_boxes; ++j)
-            detections[i].push_back(extract<full_object_detection>(pydetections[i][j]));
+            detections[i].push_back(boost::python::extract<full_object_detection>(pydetections[i][j]));
 
         pyimage_to_dlib_image(pyimages[i], images[i]);
         if (num_scales > 0)
@@ -134,7 +134,7 @@ inline double test_shape_predictor_with_images_py (
             if (num_boxes != len(pyscales[i]))
                 throw dlib::error("The length of the scales list must match the length of the detections list.");
             for (unsigned long j = 0; j < num_boxes; ++j)
-                scales[i].push_back(extract<double>(pyscales[i][j]));
+                scales[i].push_back(boost::python::extract<double>(pyscales[i][j]));
         }
     }
 
@@ -155,25 +155,24 @@ inline double test_shape_predictor_with_images_no_scales_py (
 
 void bind_shape_predictors()
 {
-    using boost::python::arg;
     {
     typedef full_object_detection type;
-    class_<type>("full_object_detection",
+    boost::python::class_<type>("full_object_detection",
     "This object represents the location of an object in an image along with the \
     positions of each of its constituent parts.")
-        .def("__init__", make_constructor(&full_obj_det_init),
+        .def("__init__", boost::python::make_constructor(&full_obj_det_init),
 "requires \n\
     - rect: dlib rectangle \n\
     - parts: list of dlib points")
         .add_property("rect", &full_obj_det_get_rect, "Bounding box from the underlying detector. Parts can be outside box if appropriate.")
         .add_property("num_parts", &full_obj_det_num_parts, "The number of parts of the object.")
-        .def("part", &full_obj_det_part, (arg("idx")), "A single part of the object as a dlib point.")
+        .def("part", &full_obj_det_part, (boost::python::arg("idx")), "A single part of the object as a dlib point.")
         .def("parts", &full_obj_det_parts, "A vector of dlib points representing all of the parts.")
         .def_pickle(serialize_pickle<type>());
     }
     {
     typedef shape_predictor_training_options type;
-    class_<type>("shape_predictor_training_options",
+    boost::python::class_<type>("shape_predictor_training_options",
         "This object is a container for the options to the train_shape_predictor() routine.")
         .add_property("be_verbose", &type::be_verbose,
                                     &type::be_verbose,
@@ -216,16 +215,16 @@ void bind_shape_predictors()
     }
     {
     typedef shape_predictor type;
-    class_<type>("shape_predictor",
+    boost::python::class_<type>("shape_predictor",
 "This object is a tool that takes in an image region containing some object and \
 outputs a set of point locations that define the pose of the object. The classic \
 example of this is human face pose prediction, where you take an image of a human \
 face as input and are expected to identify the locations of important facial \
 landmarks such as the corners of the mouth and eyes, tip of the nose, and so forth.")
-        .def("__init__", make_constructor(&load_object_from_file<type>),
+        .def("__init__", boost::python::make_constructor(&load_object_from_file<type>),
 "Loads a shape_predictor from a file that contains the output of the \n\
 train_shape_predictor() routine.")
-        .def("__call__", &run_predictor, (arg("image"), arg("box")),
+        .def("__call__", &run_predictor, (boost::python::arg("image"), boost::python::arg("box")),
 "requires \n\
     - image is a numpy ndarray containing either an 8bit grayscale or RGB \n\
       image. \n\
@@ -233,12 +232,12 @@ train_shape_predictor() routine.")
 ensures \n\
     - This function runs the shape predictor on the input image and returns \n\
       a single full_object_detection.")
-        .def("save", save_shape_predictor, (arg("predictor_output_filename")), "Save a shape_predictor to the provided path.")
+        .def("save", save_shape_predictor, (boost::python::arg("predictor_output_filename")), "Save a shape_predictor to the provided path.")
         .def_pickle(serialize_pickle<type>());
     }
     {
-    def("train_shape_predictor", train_shape_predictor_on_images_py,
-        (arg("images"), arg("object_detections"), arg("options")),
+    boost::python::def("train_shape_predictor", train_shape_predictor_on_images_py,
+        (boost::python::arg("images"), boost::python::arg("object_detections"), boost::python::arg("options")),
 "requires \n\
     - options.lambda_param > 0 \n\
     - 0 < options.nu <= 1 \n\
@@ -252,8 +251,8 @@ ensures \n\
       shape_predictor based on the provided labeled images, full_object_detections, and options.\n\
     - The trained shape_predictor is returned");
 
-    def("train_shape_predictor", train_shape_predictor,
-        (arg("dataset_filename"), arg("predictor_output_filename"), arg("options")),
+    boost::python::def("train_shape_predictor", train_shape_predictor,
+        (boost::python::arg("dataset_filename"), boost::python::arg("predictor_output_filename"), boost::python::arg("options")),
 "requires \n\
     - options.lambda_param > 0 \n\
     - 0 < options.nu <= 1 \n\
@@ -265,8 +264,8 @@ ensures \n\
       XML format produced by dlib's save_image_dataset_metadata() routine. \n\
     - The trained shape predictor is serialized to the file predictor_output_filename.");
 
-    def("test_shape_predictor", test_shape_predictor_py,
-        (arg("dataset_filename"), arg("predictor_filename")),
+    boost::python::def("test_shape_predictor", test_shape_predictor_py,
+        (boost::python::arg("dataset_filename"), boost::python::arg("predictor_filename")),
 "ensures \n\
     - Loads an image dataset from dataset_filename.  We assume dataset_filename is \n\
       a file using the XML format written by save_image_dataset_metadata(). \n\
@@ -279,8 +278,8 @@ ensures \n\
       shape_predictor_trainer() routine.  Therefore, see the documentation \n\
       for shape_predictor_trainer() for a detailed definition of the mean average error.");
 
-    def("test_shape_predictor", test_shape_predictor_with_images_no_scales_py,
-            (arg("images"), arg("detections"), arg("shape_predictor")),
+    boost::python::def("test_shape_predictor", test_shape_predictor_with_images_no_scales_py,
+            (boost::python::arg("images"), boost::python::arg("detections"), boost::python::arg("shape_predictor")),
 "requires \n\
     - len(images) == len(object_detections) \n\
     - images should be a list of numpy matrices that represent images, either RGB or grayscale. \n\
@@ -296,8 +295,8 @@ ensures \n\
       for shape_predictor_trainer() for a detailed definition of the mean average error.");
 
 
-    def("test_shape_predictor", test_shape_predictor_with_images_py,
-            (arg("images"), arg("detections"), arg("scales"), arg("shape_predictor")),
+    boost::python::def("test_shape_predictor", test_shape_predictor_with_images_py,
+            (boost::python::arg("images"), boost::python::arg("detections"), boost::python::arg("scales"), boost::python::arg("shape_predictor")),
 "requires \n\
     - len(images) == len(object_detections) \n\
     - len(object_detections) == len(scales) \n\

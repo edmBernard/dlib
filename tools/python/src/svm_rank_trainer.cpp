@@ -87,7 +87,7 @@ void add_ranker (
     const char* name
 )
 {
-    class_<trainer>(name)
+    boost::python::class_<trainer>(name)
         .add_property("epsilon", get_epsilon<trainer>, set_epsilon<trainer>)
         .add_property("c", get_c<trainer>, set_c<trainer>)
         .add_property("max_iterations", &trainer::get_max_iterations, &trainer::set_max_iterations)
@@ -122,27 +122,26 @@ const ranking_test _cross_ranking_validate_trainer (
 
 void bind_svm_rank_trainer()
 {
-    using boost::python::arg;
-    class_<ranking_pair<sample_type> >("ranking_pair")
+    boost::python::class_<ranking_pair<sample_type> >("ranking_pair")
         .add_property("relevant", &ranking_pair<sample_type>::relevant)
         .add_property("nonrelevant", &ranking_pair<sample_type>::nonrelevant)
         .def_pickle(serialize_pickle<ranking_pair<sample_type> >());
 
-    class_<ranking_pair<sparse_vect> >("sparse_ranking_pair")
+    boost::python::class_<ranking_pair<sparse_vect> >("sparse_ranking_pair")
         .add_property("relevant", &ranking_pair<sparse_vect>::relevant)
         .add_property("nonrelevant", &ranking_pair<sparse_vect>::nonrelevant)
         .def_pickle(serialize_pickle<ranking_pair<sparse_vect> >());
 
     typedef std::vector<ranking_pair<sample_type> > ranking_pairs;
-    class_<ranking_pairs>("ranking_pairs")
-        .def(vector_indexing_suite<ranking_pairs>())
+    boost::python::class_<ranking_pairs>("ranking_pairs")
+        .def(boost::python::vector_indexing_suite<ranking_pairs>())
         .def("clear", &ranking_pairs::clear)
         .def("resize", resize<ranking_pairs>)
         .def_pickle(serialize_pickle<ranking_pairs>());
 
     typedef std::vector<ranking_pair<sparse_vect> > sparse_ranking_pairs;
-    class_<sparse_ranking_pairs>("sparse_ranking_pairs")
-        .def(vector_indexing_suite<sparse_ranking_pairs>())
+    boost::python::class_<sparse_ranking_pairs>("sparse_ranking_pairs")
+        .def(boost::python::vector_indexing_suite<sparse_ranking_pairs>())
         .def("clear", &sparse_ranking_pairs::clear)
         .def("resize", resize<sparse_ranking_pairs>)
         .def_pickle(serialize_pickle<sparse_ranking_pairs>());
@@ -150,12 +149,12 @@ void bind_svm_rank_trainer()
     add_ranker<svm_rank_trainer<linear_kernel<sample_type> > >("svm_rank_trainer");
     add_ranker<svm_rank_trainer<sparse_linear_kernel<sparse_vect> > >("svm_rank_trainer_sparse");
 
-    def("cross_validate_ranking_trainer", &_cross_ranking_validate_trainer<
+    boost::python::def("cross_validate_ranking_trainer", &_cross_ranking_validate_trainer<
                 svm_rank_trainer<linear_kernel<sample_type> >,sample_type>,
-                (arg("trainer"), arg("samples"), arg("folds")) );
-    def("cross_validate_ranking_trainer", &_cross_ranking_validate_trainer<
+                (boost::python::arg("trainer"), boost::python::arg("samples"), boost::python::arg("folds")) );
+    boost::python::def("cross_validate_ranking_trainer", &_cross_ranking_validate_trainer<
                 svm_rank_trainer<sparse_linear_kernel<sparse_vect> > ,sparse_vect>,
-                (arg("trainer"), arg("samples"), arg("folds")) );
+                (boost::python::arg("trainer"), boost::python::arg("samples"), boost::python::arg("folds")) );
 }
 
 

@@ -37,7 +37,7 @@ struct serialize_pickle : boost::python::pickle_suite
                 ("expected 1-item tuple in call to __setstate__; got %s"
                  % state).ptr()
             );
-            throw_error_already_set();
+            boost::python::throw_error_already_set();
         }
 
         // We used to serialize by converting to a str but the boost.python routines for
@@ -45,16 +45,16 @@ struct serialize_pickle : boost::python::pickle_suite
         // UTF-8 encodings.  So instead we access the python C interface directly and use
         // bytes objects.  However, we keep the deserialization code that worked with str
         // for backwards compatibility with previously pickled files.
-        if (extract<str>(state[0]).check())
+        if (boost::python::extract<boost::python::str>(state[0]).check())
         {
-            str data = extract<str>(state[0]);
-            std::string temp(extract<const char*>(data), len(data));
+            boost::python::str data = boost::python::extract<boost::python::str>(state[0]);
+            std::string temp(boost::python::extract<const char*>(data), len(data));
             std::istringstream sin(temp);
             deserialize(item, sin);
         }
-        else if(PyBytes_Check(object(state[0]).ptr()))
+        else if(PyBytes_Check(boost::python::object(state[0]).ptr()))
         {
-            object obj = state[0];
+            boost::python::object obj = state[0];
             char* data = PyBytes_AsString(obj.ptr());
             unsigned long num = PyBytes_Size(obj.ptr());
             std::istringstream sin(std::string(data, num));

@@ -55,12 +55,12 @@ matrix<double,0,1> apply_cca_transform (
 
 void bind_cca()
 {
-    class_<cca_outputs>("cca_outputs")
+    boost::python::class_<cca_outputs>("cca_outputs")
         .add_property("correlations", &cca_outputs::correlations)
         .add_property("Ltrans", &cca_outputs::Ltrans)
         .add_property("Rtrans", &cca_outputs::Rtrans);
 
-    def("max_index_plus_one", sparse_vector_max_index_plus_one, arg("v"),
+    boost::python::def("max_index_plus_one", sparse_vector_max_index_plus_one, boost::python::arg("v"),
 "ensures    \n\
     - returns the dimensionality of the given sparse vector.  That is, returns a    \n\
       number one larger than the maximum index value in the vector.  If the vector    \n\
@@ -68,7 +68,7 @@ void bind_cca()
     );
 
 
-    def("apply_cca_transform", apply_cca_transform, (arg("m"), arg("v")),
+    boost::python::def("apply_cca_transform", apply_cca_transform, (boost::python::arg("m"), boost::python::arg("v")),
 "requires    \n\
     - max_index_plus_one(v) <= m.nr()    \n\
 ensures    \n\
@@ -77,7 +77,7 @@ ensures    \n\
     );
 
 
-    def("cca", _cca1, (arg("L"), arg("R"), arg("num_correlations"), arg("extra_rank")=5, arg("q")=2, arg("regularization")=0),
+    boost::python::def("cca", _cca1, (boost::python::arg("L"), boost::python::arg("R"), boost::python::arg("num_correlations"), boost::python::arg("extra_rank")=5, boost::python::arg("q")=2, boost::python::arg("regularization")=0),
 "requires    \n\
     - num_correlations > 0    \n\
     - len(L) > 0     \n\
@@ -131,7 +131,7 @@ ensures    \n\
       Dhillon in his paper \"Two Step CCA: A new spectral method for estimating    \n\
       vector models of words\".   " 
         
-        );
+    );
 }
 
 

@@ -52,9 +52,9 @@ string cv__repr__ (const cv& v)
     return sout.str();
 }
 
-std::shared_ptr<cv> cv_from_object(object obj)
+std::shared_ptr<cv> cv_from_object(boost::python::object obj)
 {
-    extract<long> thesize(obj);
+    boost::python::extract<long> thesize(obj);
     if (thesize.check())
     {
         long nr = thesize;
@@ -68,7 +68,7 @@ std::shared_ptr<cv> cv_from_object(object obj)
         std::shared_ptr<cv> temp(new cv(nr));
         for ( long r = 0; r < nr; ++r)
         {
-            (*temp)(r) = extract<double>(obj[r]);
+            (*temp)(r) = boost::python::extract<double>(obj[r]);
         }
         return temp;
     }
@@ -107,9 +107,9 @@ double cv__getitem__(cv& m, long r)
 }
 
 
-cv cv__getitem2__(cv& m, slice r)
+cv cv__getitem2__(cv& m, boost::python::slice r)
 {
-    slice::range<cv::iterator> bounds;
+    boost::python::slice::range<cv::iterator> bounds;
     bounds = r.get_indicies<>(m.begin(), m.end());
     long num = (bounds.stop-bounds.start+1);
     // round num up to the next multiple of bounds.step.
@@ -157,12 +157,11 @@ long point_y(const point& p) { return p.y(); }
 // ----------------------------------------------------------------------------------------
 void bind_vector()
 {
-    using boost::python::arg;
     {
-    class_<cv>("vector", "This object represents the mathematical idea of a column vector.", init<>())
+    boost::python::class_<cv>("vector", "This object represents the mathematical idea of a column vector.", boost::python::init<>())
         .def("set_size", &cv_set_size)
         .def("resize", &cv_set_size)
-        .def("__init__", make_constructor(&cv_from_object))
+        .def("__init__", boost::python::make_constructor(&cv_from_object))
         .def("__repr__", &cv__repr__)
         .def("__str__", &cv__str__)
         .def("__len__", &cv__len__)
@@ -172,12 +171,12 @@ void bind_vector()
         .add_property("shape", &cv_get_matrix_size)
         .def_pickle(serialize_pickle<cv>());
 
-    def("dot", dotprod, "Compute the dot product between two dense column vectors.");
+    boost::python::def("dot", dotprod, "Compute the dot product between two dense column vectors.");
     }
     {
     typedef point type;
-    class_<type>("point", "This object represents a single point of integer coordinates that maps directly to a dlib::point.")
-            .def(init<long,long>((arg("x"), arg("y"))))
+    boost::python::class_<type>("point", "This object represents a single point of integer coordinates that maps directly to a dlib::point.")
+            .def(boost::python::init<long,long>((boost::python::arg("x"), boost::python::arg("y"))))
             .def("__repr__", &point__repr__)
             .def("__str__", &point__str__)
             .add_property("x", &point_x, "The x-coordinate of the point.")
@@ -186,8 +185,8 @@ void bind_vector()
     }
     {
     typedef std::vector<point> type;
-    class_<type>("points", "An array of point objects.")
-        .def(vector_indexing_suite<type>())
+    boost::python::class_<type>("points", "An array of point objects.")
+        .def(boost::python::vector_indexing_suite<type>())
         .def("clear", &type::clear)
         .def("resize", resize<type>)
         .def_pickle(serialize_pickle<type>());

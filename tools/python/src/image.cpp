@@ -27,10 +27,8 @@ string print_rgb_pixel_repr(const rgb_pixel& p)
 // ----------------------------------------------------------------------------------------
 void bind_image_classes()
 {
-    using boost::python::arg;
-
-    class_<rgb_pixel>("rgb_pixel")
-        .def(init<unsigned char,unsigned char,unsigned char>( (arg("red"),arg("green"),arg("blue")) ))
+    boost::python::class_<rgb_pixel>("rgb_pixel")
+        .def(boost::python::init<unsigned char,unsigned char,unsigned char>( (boost::python::arg("red"),boost::python::arg("green"),boost::python::arg("blue")) ))
         .def("__str__", &print_rgb_pixel_str)
         .def("__repr__", &print_rgb_pixel_repr)
         .add_property("red", &rgb_pixel::red)

@@ -4,6 +4,7 @@
 #define DLIB_BOOST_PYTHON_UtILS_Hh_
 
 #include <boost/python.hpp>
+#include <pybind11/pybind11.h>
 #include <vector>
 #include <string>
 #include <dlib/serialize.h>

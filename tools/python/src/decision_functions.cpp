@@ -43,7 +43,7 @@ void add_df (
 )
 {
     typedef decision_function<kernel_type> df_type;
-    class_<df_type>(name.c_str())
+    boost::python::class_<df_type>(name.c_str())
         .def("__call__", &predict<df_type>)
         .def_pickle(serialize_pickle<df_type>());
 }
@@ -95,7 +95,7 @@ void add_linear_df (
 )
 {
     typedef decision_function<kernel_type> df_type;
-    class_<df_type>(name.c_str())
+    boost::python::class_<df_type>(name.c_str())
         .def("__call__", predict<df_type>)
         .add_property("weights", &get_weights<df_type>)
         .add_property("bias", get_bias<df_type>, set_bias<df_type>)
@@ -159,7 +159,6 @@ ranking_test _test_ranking_function2 (
 
 void bind_decision_functions()
 {
-    using boost::python::arg;
     add_linear_df<linear_kernel<sample_type> >("_decision_function_linear");
     add_linear_df<sparse_linear_kernel<sparse_vect> >("_decision_function_sparse_linear");
 
@@ -176,59 +175,59 @@ void bind_decision_functions()
     add_df<sparse_sigmoid_kernel<sparse_vect> >("_decision_function_sparse_sigmoid");
 
 
-    def("test_binary_decision_function", _test_binary_decision_function<linear_kernel<sample_type> >,
-        (arg("function"), arg("samples"), arg("labels")));
-    def("test_binary_decision_function", _test_binary_decision_function<sparse_linear_kernel<sparse_vect> >,
-        (arg("function"), arg("samples"), arg("labels")));
-    def("test_binary_decision_function", _test_binary_decision_function<radial_basis_kernel<sample_type> >,
-        (arg("function"), arg("samples"), arg("labels")));
-    def("test_binary_decision_function", _test_binary_decision_function<sparse_radial_basis_kernel<sparse_vect> >,
-        (arg("function"), arg("samples"), arg("labels")));
-    def("test_binary_decision_function", _test_binary_decision_function<polynomial_kernel<sample_type> >,
-        (arg("function"), arg("samples"), arg("labels")));
-    def("test_binary_decision_function", _test_binary_decision_function<sparse_polynomial_kernel<sparse_vect> >,
-        (arg("function"), arg("samples"), arg("labels")));
-    def("test_binary_decision_function", _test_binary_decision_function<histogram_intersection_kernel<sample_type> >,
-        (arg("function"), arg("samples"), arg("labels")));
-    def("test_binary_decision_function", _test_binary_decision_function<sparse_histogram_intersection_kernel<sparse_vect> >,
-        (arg("function"), arg("samples"), arg("labels")));
-    def("test_binary_decision_function", _test_binary_decision_function<sigmoid_kernel<sample_type> >,
-        (arg("function"), arg("samples"), arg("labels")));
-    def("test_binary_decision_function", _test_binary_decision_function<sparse_sigmoid_kernel<sparse_vect> >,
-        (arg("function"), arg("samples"), arg("labels")));
+    boost::python::def("test_binary_decision_function", _test_binary_decision_function<linear_kernel<sample_type> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("labels")));
+    boost::python::def("test_binary_decision_function", _test_binary_decision_function<sparse_linear_kernel<sparse_vect> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("labels")));
+    boost::python::def("test_binary_decision_function", _test_binary_decision_function<radial_basis_kernel<sample_type> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("labels")));
+    boost::python::def("test_binary_decision_function", _test_binary_decision_function<sparse_radial_basis_kernel<sparse_vect> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("labels")));
+    boost::python::def("test_binary_decision_function", _test_binary_decision_function<polynomial_kernel<sample_type> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("labels")));
+    boost::python::def("test_binary_decision_function", _test_binary_decision_function<sparse_polynomial_kernel<sparse_vect> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("labels")));
+    boost::python::def("test_binary_decision_function", _test_binary_decision_function<histogram_intersection_kernel<sample_type> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("labels")));
+    boost::python::def("test_binary_decision_function", _test_binary_decision_function<sparse_histogram_intersection_kernel<sparse_vect> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("labels")));
+    boost::python::def("test_binary_decision_function", _test_binary_decision_function<sigmoid_kernel<sample_type> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("labels")));
+    boost::python::def("test_binary_decision_function", _test_binary_decision_function<sparse_sigmoid_kernel<sparse_vect> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("labels")));
 
-    def("test_regression_function", _test_regression_function<linear_kernel<sample_type> >,
-        (arg("function"), arg("samples"), arg("targets")));
-    def("test_regression_function", _test_regression_function<sparse_linear_kernel<sparse_vect> >,
-        (arg("function"), arg("samples"), arg("targets")));
-    def("test_regression_function", _test_regression_function<radial_basis_kernel<sample_type> >,
-        (arg("function"), arg("samples"), arg("targets")));
-    def("test_regression_function", _test_regression_function<sparse_radial_basis_kernel<sparse_vect> >,
-        (arg("function"), arg("samples"), arg("targets")));
-    def("test_regression_function", _test_regression_function<histogram_intersection_kernel<sample_type> >,
-        (arg("function"), arg("samples"), arg("targets")));
-    def("test_regression_function", _test_regression_function<sparse_histogram_intersection_kernel<sparse_vect> >,
-        (arg("function"), arg("samples"), arg("targets")));
-    def("test_regression_function", _test_regression_function<sigmoid_kernel<sample_type> >,
-        (arg("function"), arg("samples"), arg("targets")));
-    def("test_regression_function", _test_regression_function<sparse_sigmoid_kernel<sparse_vect> >,
-        (arg("function"), arg("samples"), arg("targets")));
-    def("test_regression_function", _test_regression_function<polynomial_kernel<sample_type> >,
-        (arg("function"), arg("samples"), arg("targets")));
-    def("test_regression_function", _test_regression_function<sparse_polynomial_kernel<sparse_vect> >,
-        (arg("function"), arg("samples"), arg("targets")));
+    boost::python::def("test_regression_function", _test_regression_function<linear_kernel<sample_type> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("targets")));
+    boost::python::def("test_regression_function", _test_regression_function<sparse_linear_kernel<sparse_vect> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("targets")));
+    boost::python::def("test_regression_function", _test_regression_function<radial_basis_kernel<sample_type> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("targets")));
+    boost::python::def("test_regression_function", _test_regression_function<sparse_radial_basis_kernel<sparse_vect> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("targets")));
+    boost::python::def("test_regression_function", _test_regression_function<histogram_intersection_kernel<sample_type> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("targets")));
+    boost::python::def("test_regression_function", _test_regression_function<sparse_histogram_intersection_kernel<sparse_vect> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("targets")));
+    boost::python::def("test_regression_function", _test_regression_function<sigmoid_kernel<sample_type> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("targets")));
+    boost::python::def("test_regression_function", _test_regression_function<sparse_sigmoid_kernel<sparse_vect> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("targets")));
+    boost::python::def("test_regression_function", _test_regression_function<polynomial_kernel<sample_type> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("targets")));
+    boost::python::def("test_regression_function", _test_regression_function<sparse_polynomial_kernel<sparse_vect> >,
+        (boost::python::arg("function"), boost::python::arg("samples"), boost::python::arg("targets")));
 
-    def("test_ranking_function", _test_ranking_function1<linear_kernel<sample_type> >,
-        (arg("function"), arg("samples")));
-    def("test_ranking_function", _test_ranking_function1<sparse_linear_kernel<sparse_vect> >,
-        (arg("function"), arg("samples")));
-    def("test_ranking_function", _test_ranking_function2<linear_kernel<sample_type> >,
-        (arg("function"), arg("sample")));
-    def("test_ranking_function", _test_ranking_function2<sparse_linear_kernel<sparse_vect> >,
-        (arg("function"), arg("sample")));
+    boost::python::def("test_ranking_function", _test_ranking_function1<linear_kernel<sample_type> >,
+        (boost::python::arg("function"), boost::python::arg("samples")));
+    boost::python::def("test_ranking_function", _test_ranking_function1<sparse_linear_kernel<sparse_vect> >,
+        (boost::python::arg("function"), boost::python::arg("samples")));
+    boost::python::def("test_ranking_function", _test_ranking_function2<linear_kernel<sample_type> >,
+        (boost::python::arg("function"), boost::python::arg("sample")));
+    boost::python::def("test_ranking_function", _test_ranking_function2<sparse_linear_kernel<sparse_vect> >,
+        (boost::python::arg("function"), boost::python::arg("sample")));
 
 
-    class_<binary_test>("_binary_test")
+    boost::python::class_<binary_test>("_binary_test")
         .def("__str__", binary_test__str__)
         .def("__repr__", binary_test__repr__)
         .add_property("class1_accuracy", &binary_test::class1_accuracy,
@@ -236,7 +235,7 @@ void bind_decision_functions()
         .add_property("class2_accuracy", &binary_test::class2_accuracy,
             "A value between 0 and 1, measures accuracy on the -1 class.");
 
-    class_<ranking_test>("_ranking_test")
+    boost::python::class_<ranking_test>("_ranking_test")
         .def("__str__", ranking_test__str__)
         .def("__repr__", ranking_test__repr__)
         .add_property("ranking_accuracy", &ranking_test::ranking_accuracy,
@@ -244,7 +243,7 @@ void bind_decision_functions()
         .add_property("mean_ap", &ranking_test::mean_ap,
             "A value between 0 and 1, measures the mean average precision of the ranking.");
 
-    class_<regression_test>("_regression_test")
+    boost::python::class_<regression_test>("_regression_test")
         .def("__str__", regression_test__str__)
         .def("__repr__", regression_test__repr__)
         .add_property("mean_squared_error", &regression_test::mean_squared_error,

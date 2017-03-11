@@ -53,7 +53,7 @@ void _save_libsvm_formatted_data (
 
 // ----------------------------------------------------------------------------------------
 
-list _max_cost_assignment (
+boost::python::list _max_cost_assignment (
     const matrix<double>& cost
 )
 {
@@ -69,7 +69,7 @@ list _max_cost_assignment (
 
 double _assignment_cost (
     const matrix<double>& cost,
-    const list& assignment
+    const boost::python::list& assignment
 )
 {
     return assignment_cost(cost, python_list_to_vector<long>(assignment));
@@ -87,9 +87,8 @@ void hit_enter_to_continue()
 
 void bind_other()
 {
-    using boost::python::arg;
 
-    def("max_cost_assignment", _max_cost_assignment, (arg("cost")),
+    boost::python::def("max_cost_assignment", _max_cost_assignment, (boost::python::arg("cost")),
 "requires    \n\
     - cost.nr() == cost.nc()    \n\
       (i.e. the input must be a square matrix)    \n\
@@ -110,7 +109,7 @@ ensures    \n\
       of the largest to the smallest value in cost is no more than about 1e16.   " 
         );
 
-    def("assignment_cost", _assignment_cost, (arg("cost"),arg("assignment")),
+    boost::python::def("assignment_cost", _assignment_cost, (boost::python::arg("cost"),boost::python::arg("assignment")),
 "requires    \n\
     - cost.nr() == cost.nc()    \n\
       (i.e. the input must be a square matrix)    \n\
@@ -126,7 +125,7 @@ ensures    \n\
         sum over i: cost[i][assignment[i]]   " 
         );
 
-    def("make_sparse_vector", _make_sparse_vector , 
+    boost::python::def("make_sparse_vector", _make_sparse_vector , 
 "This function modifies its argument so that it is a properly sorted sparse vector.    \n\
 This means that the elements of the sparse vector will be ordered so that pairs    \n\
 with smaller indices come first.  Additionally, there won't be any pairs with    \n\
@@ -134,10 +133,10 @@ identical indices.  If such pairs were present in the input sparse vector then  
 their values will be added together and only one pair with their index will be    \n\
 present in the output.   " 
         );
-    def("make_sparse_vector", _make_sparse_vector2 , 
+    boost::python::def("make_sparse_vector", _make_sparse_vector2 , 
         "This function modifies a sparse_vectors object so that all elements it contains are properly sorted sparse vectors.");
 
-    def("load_libsvm_formatted_data",_load_libsvm_formatted_data, (arg("file_name")),
+    boost::python::def("load_libsvm_formatted_data",_load_libsvm_formatted_data, (boost::python::arg("file_name")),
 "ensures    \n\
     - Attempts to read a file of the given name that should contain libsvm    \n\
       formatted data.  The data is returned as a tuple where the first tuple    \n\
@@ -145,14 +144,14 @@ present in the output.   "
       labels.    " 
     );
 
-    def("save_libsvm_formatted_data",_save_libsvm_formatted_data, (arg("file_name"), arg("samples"), arg("labels")),
+    boost::python::def("save_libsvm_formatted_data",_save_libsvm_formatted_data, (boost::python::arg("file_name"), boost::python::arg("samples"), boost::python::arg("labels")),
 "requires    \n\
     - len(samples) == len(labels)    \n\
 ensures    \n\
     - saves the data to the given file in libsvm format   " 
     );
 
-    def("hit_enter_to_continue", hit_enter_to_continue, 
+    boost::python::def("hit_enter_to_continue", hit_enter_to_continue, 
         "Asks the user to hit enter to continue and pauses until they do so.");
 }
 
