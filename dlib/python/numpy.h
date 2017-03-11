@@ -17,7 +17,7 @@ void validate_numpy_array_type (
     const boost::python::object& obj
 )
 {
-    using namespace boost::python;
+    namespace py = pybind11;
     const char ch = extract<char>(obj.attr("dtype").attr("char"));
 
     if (dlib::is_same_type<T,double>::value && ch != 'd')

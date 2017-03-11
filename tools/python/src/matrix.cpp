@@ -8,7 +8,7 @@
 #include <boost/python/args.hpp>
 
 using namespace dlib;
-using namespace boost::python;
+namespace py = pybind11;
 using std::string;
 using std::ostringstream;
 

@@ -10,7 +10,7 @@
 
 using namespace dlib;
 using namespace std;
-using namespace boost::python;
+namespace py = pybind11;
 
 typedef matrix<double,0,1> dense_vect; 
 typedef std::vector<std::pair<unsigned long,double> > sparse_vect;

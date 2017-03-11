@@ -8,7 +8,7 @@
 
 using namespace dlib;
 using namespace std;
-using namespace boost::python;
+namespace py = pybind11;
 
 template <typename dest_image_type>
 void pyimage_to_dlib_image(object img, dest_image_type& image)

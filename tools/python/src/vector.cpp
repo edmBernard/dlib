@@ -11,7 +11,7 @@
 
 using namespace dlib;
 using namespace std;
-using namespace boost::python;
+namespace py = pybind11;
 
 typedef matrix<double,0,1> cv;
 

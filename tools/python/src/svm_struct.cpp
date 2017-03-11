@@ -9,7 +9,7 @@
 
 using namespace dlib;
 using namespace std;
-using namespace boost::python;
+namespace py = pybind11;
 
 template <typename psi_type>
 class svm_struct_prob : public structural_svm_problem<matrix<double,0,1>, psi_type>

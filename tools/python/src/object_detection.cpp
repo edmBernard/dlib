@@ -12,7 +12,7 @@
 
 using namespace dlib;
 using namespace std;
-using namespace boost::python;
+namespace py = pybind11;
 
 // ----------------------------------------------------------------------------------------
 

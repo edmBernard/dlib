@@ -30,7 +30,7 @@ struct serialize_pickle : boost::python::pickle_suite
     )
     {
         using namespace dlib;
-        using namespace boost::python;
+        namespace py = pybind11;
         if (len(state) != 1)
         {
             PyErr_SetObject(PyExc_ValueError,

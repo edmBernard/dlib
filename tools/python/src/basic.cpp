@@ -13,7 +13,7 @@
 
 using namespace std;
 using namespace dlib;
-using namespace boost::python;
+namespace py = pybind11;
 
 
 std::shared_ptr<std::vector<double> > array_from_object(object obj)

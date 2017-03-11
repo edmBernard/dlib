@@ -7,7 +7,7 @@
 #include <boost/python/args.hpp>
 
 using namespace dlib;
-using namespace boost::python;
+namespace py = pybind11;
 
 typedef std::vector<std::pair<unsigned long,double> > sparse_vect;
 
