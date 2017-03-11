@@ -85,10 +85,10 @@ void hit_enter_to_continue()
 
 // ----------------------------------------------------------------------------------------
 
-void bind_other()
+void bind_other(py::model& m)
 {
 
-    boost::python::def("max_cost_assignment", _max_cost_assignment, (boost::python::arg("cost")),
+    m.def("max_cost_assignment", _max_cost_assignment, (py::arg("cost")),
 "requires    \n\
     - cost.nr() == cost.nc()    \n\
       (i.e. the input must be a square matrix)    \n\
@@ -109,7 +109,7 @@ ensures    \n\
       of the largest to the smallest value in cost is no more than about 1e16.   " 
         );
 
-    boost::python::def("assignment_cost", _assignment_cost, (boost::python::arg("cost"),boost::python::arg("assignment")),
+    m.def("assignment_cost", _assignment_cost, (py::arg("cost"),py::arg("assignment")),
 "requires    \n\
     - cost.nr() == cost.nc()    \n\
       (i.e. the input must be a square matrix)    \n\
@@ -125,7 +125,7 @@ ensures    \n\
         sum over i: cost[i][assignment[i]]   " 
         );
 
-    boost::python::def("make_sparse_vector", _make_sparse_vector , 
+    m.def("make_sparse_vector", _make_sparse_vector , 
 "This function modifies its argument so that it is a properly sorted sparse vector.    \n\
 This means that the elements of the sparse vector will be ordered so that pairs    \n\
 with smaller indices come first.  Additionally, there won't be any pairs with    \n\
@@ -133,10 +133,10 @@ identical indices.  If such pairs were present in the input sparse vector then  
 their values will be added together and only one pair with their index will be    \n\
 present in the output.   " 
         );
-    boost::python::def("make_sparse_vector", _make_sparse_vector2 , 
+    m.def("make_sparse_vector", _make_sparse_vector2 , 
         "This function modifies a sparse_vectors object so that all elements it contains are properly sorted sparse vectors.");
 
-    boost::python::def("load_libsvm_formatted_data",_load_libsvm_formatted_data, (boost::python::arg("file_name")),
+    m.def("load_libsvm_formatted_data",_load_libsvm_formatted_data, (py::arg("file_name")),
 "ensures    \n\
     - Attempts to read a file of the given name that should contain libsvm    \n\
       formatted data.  The data is returned as a tuple where the first tuple    \n\
@@ -144,14 +144,14 @@ present in the output.   "
       labels.    " 
     );
 
-    boost::python::def("save_libsvm_formatted_data",_save_libsvm_formatted_data, (boost::python::arg("file_name"), boost::python::arg("samples"), boost::python::arg("labels")),
+    m.def("save_libsvm_formatted_data",_save_libsvm_formatted_data, (py::arg("file_name"), py::arg("samples"), py::arg("labels")),
 "requires    \n\
     - len(samples) == len(labels)    \n\
 ensures    \n\
     - saves the data to the given file in libsvm format   " 
     );
 
-    boost::python::def("hit_enter_to_continue", hit_enter_to_continue, 
+    m.def("hit_enter_to_continue", hit_enter_to_continue, 
         "Asks the user to hit enter to continue and pauses until they do so.");
 }
 

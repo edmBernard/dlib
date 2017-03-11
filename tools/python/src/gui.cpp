@@ -96,28 +96,28 @@ void bind_gui()
     typedef image_window type;
     typedef void (image_window::*set_title_funct)(const std::string&);
     typedef void (image_window::*add_overlay_funct)(const std::vector<rectangle>& r, rgb_pixel p);
-    boost::python::class_<type,boost::noncopyable>("image_window",
+    py::class_<type,boost::noncopyable>(m, "image_window",
         "This is a GUI window capable of showing images on the screen.")
         .def("__init__", boost::python::make_constructor(&make_image_window_from_image),
             "Create an image window that displays the given numpy image.")
         .def("__init__", boost::python::make_constructor(&make_image_window_from_image_and_title),
             "Create an image window that displays the given numpy image and also has the given title.")
-        .def("set_image", image_window_set_image, boost::python::arg("image"),
+        .def("set_image", image_window_set_image, py::arg("image"),
             "Make the image_window display the given image.")
-        .def("set_image", image_window_set_image_fhog_detector, boost::python::arg("detector"),
+        .def("set_image", image_window_set_image_fhog_detector, py::arg("detector"),
             "Make the image_window display the given HOG detector's filters.")
-        .def("set_image", image_window_set_image_simple_detector_py, boost::python::arg("detector"),
+        .def("set_image", image_window_set_image_simple_detector_py, py::arg("detector"),
             "Make the image_window display the given HOG detector's filters.")
-        .def("set_title", (set_title_funct)&type::set_title, boost::python::arg("title"),
+        .def("set_title", (set_title_funct)&type::set_title, py::arg("title"),
             "Set the title of the window to the given value.")
         .def("clear_overlay", &type::clear_overlay, "Remove all overlays from the image_window.")
-        .def("add_overlay", (add_overlay_funct)&type::add_overlay<rgb_pixel>, (boost::python::arg("rectangles"), boost::python::arg("color")=rgb_pixel(255, 0, 0)),
+        .def("add_overlay", (add_overlay_funct)&type::add_overlay<rgb_pixel>, (py::arg("rectangles"), py::arg("color")=rgb_pixel(255, 0, 0)),
             "Add a list of rectangles to the image_window. They will be displayed as red boxes by default, but the color can be passed.")
-        .def("add_overlay", add_overlay_rect, (boost::python::arg("rectangle"), boost::python::arg("color")=rgb_pixel(255, 0, 0)),
+        .def("add_overlay", add_overlay_rect, (py::arg("rectangle"), py::arg("color")=rgb_pixel(255, 0, 0)),
             "Add a rectangle to the image_window.  It will be displayed as a red box by default, but the color can be passed.")
-        .def("add_overlay", add_overlay_drect, (boost::python::arg("rectangle"), boost::python::arg("color")=rgb_pixel(255, 0, 0)),
+        .def("add_overlay", add_overlay_drect, (py::arg("rectangle"), py::arg("color")=rgb_pixel(255, 0, 0)),
             "Add a rectangle to the image_window.  It will be displayed as a red box by default, but the color can be passed.")
-        .def("add_overlay", add_overlay_parts, (boost::python::arg("detection"), boost::python::arg("color")=rgb_pixel(0, 0, 255)),
+        .def("add_overlay", add_overlay_parts, (py::arg("detection"), py::arg("color")=rgb_pixel(0, 0, 255)),
             "Add full_object_detection parts to the image window. They will be displayed as blue lines by default, but the color can be passed.")
         .def("wait_until_closed", &type::wait_until_closed,
             "This function blocks until the window is closed.");

@@ -53,14 +53,14 @@ matrix<double,0,1> apply_cca_transform (
     return sparse_matrix_vector_multiply(trans(m), v);
 }
 
-void bind_cca()
+void bind_cca(py::model& m)
 {
-    boost::python::class_<cca_outputs>("cca_outputs")
+    py::class_<cca_outputs>(m, "cca_outputs")
         .add_property("correlations", &cca_outputs::correlations)
         .add_property("Ltrans", &cca_outputs::Ltrans)
         .add_property("Rtrans", &cca_outputs::Rtrans);
 
-    boost::python::def("max_index_plus_one", sparse_vector_max_index_plus_one, boost::python::arg("v"),
+    m.def("max_index_plus_one", sparse_vector_max_index_plus_one, py::arg("v"),
 "ensures    \n\
     - returns the dimensionality of the given sparse vector.  That is, returns a    \n\
       number one larger than the maximum index value in the vector.  If the vector    \n\
@@ -68,7 +68,7 @@ void bind_cca()
     );
 
 
-    boost::python::def("apply_cca_transform", apply_cca_transform, (boost::python::arg("m"), boost::python::arg("v")),
+    m.def("apply_cca_transform", apply_cca_transform, (py::arg("m"), py::arg("v")),
 "requires    \n\
     - max_index_plus_one(v) <= m.nr()    \n\
 ensures    \n\
@@ -77,7 +77,7 @@ ensures    \n\
     );
 
 
-    boost::python::def("cca", _cca1, (boost::python::arg("L"), boost::python::arg("R"), boost::python::arg("num_correlations"), boost::python::arg("extra_rank")=5, boost::python::arg("q")=2, boost::python::arg("regularization")=0),
+    m.def("cca", _cca1, (py::arg("L"), py::arg("R"), py::arg("num_correlations"), py::arg("extra_rank")=5, py::arg("q")=2, py::arg("regularization")=0),
 "requires    \n\
     - num_correlations > 0    \n\
     - len(L) > 0     \n\

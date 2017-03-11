@@ -5,6 +5,7 @@
 
 #include <dlib/serialize.h>
 #include <boost/python.hpp>
+#include <pybind11/pybind11.h>
 #include <sstream>
 #include <dlib/vectorstream.h>
 

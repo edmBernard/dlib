@@ -4,6 +4,7 @@
 #define DLIB_PYTHON_NuMPY_Hh_
 
 #include <boost/python.hpp>
+#include <pybind11/pybind11.h>
 #include <dlib/error.h>
 #include <dlib/algs.h>
 #include <dlib/string.h>

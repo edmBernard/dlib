@@ -143,15 +143,15 @@ private:
 
 // ----------------------------------------------------------------------------------------
 
-void bind_face_recognition()
+void bind_face_recognition(py::model& m)
 {
     {
-    boost::python::class_<face_recognition_model_v1>("face_recognition_model_v1", "This object maps human faces into 128D vectors where pictures of the same person are mapped near to each other and pictures of different people are mapped far apart.  The constructor loads the face recognition model from a file. The model file is available here: http://dlib.net/files/dlib_face_recognition_resnet_model_v1.dat.bz2", boost::python::init<std::string>())
-        .def("compute_face_descriptor", &face_recognition_model_v1::compute_face_descriptor, (boost::python::arg("img"),boost::python::arg("face"),boost::python::arg("num_jitters")=0),
+    py::class_<face_recognition_model_v1>(m, "face_recognition_model_v1", "This object maps human faces into 128D vectors where pictures of the same person are mapped near to each other and pictures of different people are mapped far apart.  The constructor loads the face recognition model from a file. The model file is available here: http://dlib.net/files/dlib_face_recognition_resnet_model_v1.dat.bz2", py::init<std::string>())
+        .def("compute_face_descriptor", &face_recognition_model_v1::compute_face_descriptor, (py::arg("img"),py::arg("face"),py::arg("num_jitters")=0),
             "Takes an image and a full_object_detection that references a face in that image and converts it into a 128D face descriptor. "
             "If num_jitters>1 then each face will be randomly jittered slightly num_jitters times, each run through the 128D projection, and the average used as the face descriptor."
             )
-        .def("compute_face_descriptor", &face_recognition_model_v1::compute_face_descriptors, (boost::python::arg("img"),boost::python::arg("faces"),boost::python::arg("num_jitters")=0),
+        .def("compute_face_descriptor", &face_recognition_model_v1::compute_face_descriptors, (py::arg("img"),py::arg("faces"),py::arg("num_jitters")=0),
             "Takes an image and an array of full_object_detections that reference faces in that image and converts them into 128D face descriptors.  "
             "If num_jitters>1 then each face will be randomly jittered slightly num_jitters times, each run through the 128D projection, and the average used as the face descriptor."
             );
@@ -159,7 +159,7 @@ void bind_face_recognition()
 
     {
     typedef std::vector<full_object_detection> type;
-    boost::python::class_<type>("full_object_detections", "An array of full_object_detection objects.")
+    py::class_<type>(m, "full_object_detections", "An array of full_object_detection objects.")
         .def(boost::python::vector_indexing_suite<type>())
         .def("clear", &type::clear)
         .def("resize", resize<type>)

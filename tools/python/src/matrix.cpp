@@ -182,19 +182,20 @@ boost::python::tuple get_matrix_size(matrix<double>& m)
     return boost::python::make_tuple(m.nr(), m.nc());
 }
 
-void bind_matrix()
+void bind_matrix(py::model& m)
 {
-    boost::python::class_<mat_row>("_row")
+    py::class_<mat_row>(m, "_row")
         .def("__len__", &mat_row__len__)
         .def("__repr__", &mat_row__repr__)
         .def("__str__", &mat_row__str__)
         .def("__setitem__", &mat_row__setitem__)
         .def("__getitem__", &mat_row__getitem__);
 
-    boost::python::class_<matrix<double> >("matrix", "This object represents a dense 2D matrix of floating point numbers."
-        "Moreover, it binds directly to the C++ type dlib::matrix<double>.", boost::python::init<>())
-        .def("__init__", boost::python::make_constructor(&make_matrix_from_size))
-        .def("set_size", &matrix_set_size, (boost::python::arg("rows"), boost::python::arg("cols")), "Set the size of the matrix to the given number of rows and columns.")
+    py::class_<matrix<double> >(m, "matrix", "This object represents a dense 2D matrix of floating point numbers."
+                                "Moreover, it binds directly to the C++ type dlib::matrix<double>.")
+        .def(py::init<>())
+        // .def("__init__", boost::python::make_constructor(&make_matrix_from_size))
+        .def("set_size", &matrix_set_size, (py::arg("rows"), py::arg("cols")), "Set the size of the matrix to the given number of rows and columns.")
         .def("__init__", boost::python::make_constructor(&from_object))
         .def("__init__", boost::python::make_constructor(&from_list))
         .def("__repr__", &matrix_double__repr__)

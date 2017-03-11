@@ -25,10 +25,10 @@ string print_rgb_pixel_repr(const rgb_pixel& p)
 }
 
 // ----------------------------------------------------------------------------------------
-void bind_image_classes()
+void bind_image_classes(py::model& m)
 {
-    boost::python::class_<rgb_pixel>("rgb_pixel")
-        .def(boost::python::init<unsigned char,unsigned char,unsigned char>( (boost::python::arg("red"),boost::python::arg("green"),boost::python::arg("blue")) ))
+    py::class_<rgb_pixel>(m, "rgb_pixel")
+        .def(py::init<unsigned char,unsigned char,unsigned char>( (py::arg("red"),py::arg("green"),py::arg("blue")) ))
         .def("__str__", &print_rgb_pixel_str)
         .def("__repr__", &print_rgb_pixel_repr)
         .add_property("red", &rgb_pixel::red)

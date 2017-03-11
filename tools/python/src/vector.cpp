@@ -155,10 +155,11 @@ long point_x(const point& p) { return p.x(); }
 long point_y(const point& p) { return p.y(); }
 
 // ----------------------------------------------------------------------------------------
-void bind_vector()
+void bind_vector(py::model& m)
 {
     {
-    boost::python::class_<cv>("vector", "This object represents the mathematical idea of a column vector.", boost::python::init<>())
+    py::class_<cv>(m, "vector", "This object represents the mathematical idea of a column vector.")
+        .def(py::init<>())
         .def("set_size", &cv_set_size)
         .def("resize", &cv_set_size)
         .def("__init__", boost::python::make_constructor(&cv_from_object))
@@ -171,12 +172,12 @@ void bind_vector()
         .add_property("shape", &cv_get_matrix_size)
         .def_pickle(serialize_pickle<cv>());
 
-    boost::python::def("dot", dotprod, "Compute the dot product between two dense column vectors.");
+    m.def("dot", dotprod, "Compute the dot product between two dense column vectors.");
     }
     {
     typedef point type;
-    boost::python::class_<type>("point", "This object represents a single point of integer coordinates that maps directly to a dlib::point.")
-            .def(boost::python::init<long,long>((boost::python::arg("x"), boost::python::arg("y"))))
+    py::class_<type>(m, "point", "This object represents a single point of integer coordinates that maps directly to a dlib::point.")
+            .def(py::init<long,long>((py::arg("x"), py::arg("y"))))
             .def("__repr__", &point__repr__)
             .def("__str__", &point__str__)
             .add_property("x", &point_x, "The x-coordinate of the point.")
@@ -185,7 +186,7 @@ void bind_vector()
     }
     {
     typedef std::vector<point> type;
-    boost::python::class_<type>("points", "An array of point objects.")
+    py::class_<type>(m, "points", "An array of point objects.")
         .def(boost::python::vector_indexing_suite<type>())
         .def("clear", &type::clear)
         .def("resize", resize<type>)

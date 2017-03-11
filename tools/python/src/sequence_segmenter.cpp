@@ -776,9 +776,9 @@ const segmenter_test cross_validate_sequence_segmenter2 (
 
 // ----------------------------------------------------------------------------------------
 
-void bind_sequence_segmenter()
+void bind_sequence_segmenter(py::model& m)
 {
-    boost::python::class_<segmenter_params>("segmenter_params",
+    py::class_<segmenter_params>(m, "segmenter_params",
 "This class is used to define all the optional parameters to the    \n\
 train_sequence_segmenter() and cross_validate_sequence_segmenter() routines.   ")
         .def_readwrite("use_BIO_model", &segmenter_params::use_BIO_model)
@@ -794,14 +794,14 @@ train_sequence_segmenter() and cross_validate_sequence_segmenter() routines.   "
         .def("__str__",&segmenter_params__str__)
         .def_pickle(serialize_pickle<segmenter_params>());
 
-    boost::python::class_<segmenter_type> ("segmenter_type", "This object represents a sequence segmenter and is the type of object "
+    py::class_<segmenter_type>(m, "segmenter_type", "This object represents a sequence segmenter and is the type of object "
         "returned by the dlib.train_sequence_segmenter() routine.")
         .def("__call__", &segmenter_type::segment_sequence_dense)
         .def("__call__", &segmenter_type::segment_sequence_sparse)
         .def_readonly("weights", &segmenter_type::get_weights)
         .def_pickle(serialize_pickle<segmenter_type>());
 
-    boost::python::class_<segmenter_test> ("segmenter_test", "This object is the output of the dlib.test_sequence_segmenter() and "
+    py::class_<segmenter_test>(m, "segmenter_test", "This object is the output of the dlib.test_sequence_segmenter() and "
         "dlib.cross_validate_sequence_segmenter() routines.")
         .def_readwrite("precision", &segmenter_test::precision)
         .def_readwrite("recall", &segmenter_test::recall)
@@ -810,17 +810,17 @@ train_sequence_segmenter() and cross_validate_sequence_segmenter() routines.   "
         .def("__str__",&segmenter_test__str__)
         .def_pickle(serialize_pickle<segmenter_test>());
 
-    boost::python::def("train_sequence_segmenter", train_dense, (boost::python::arg("samples"), boost::python::arg("segments"), boost::python::arg("params")=segmenter_params()));
-    boost::python::def("train_sequence_segmenter", train_sparse, (boost::python::arg("samples"), boost::python::arg("segments"), boost::python::arg("params")=segmenter_params()));
+    m.def("train_sequence_segmenter", train_dense, (py::arg("samples"), py::arg("segments"), py::arg("params")=segmenter_params()));
+    m.def("train_sequence_segmenter", train_sparse, (py::arg("samples"), py::arg("segments"), py::arg("params")=segmenter_params()));
 
 
-    boost::python::def("test_sequence_segmenter", test_sequence_segmenter1);
-    boost::python::def("test_sequence_segmenter", test_sequence_segmenter2);
+    m.def("test_sequence_segmenter", test_sequence_segmenter1);
+    m.def("test_sequence_segmenter", test_sequence_segmenter2);
 
-    boost::python::def("cross_validate_sequence_segmenter", cross_validate_sequence_segmenter1,
-        (boost::python::arg("samples"), boost::python::arg("segments"), boost::python::arg("folds"), boost::python::arg("params")=segmenter_params()));
-    boost::python::def("cross_validate_sequence_segmenter", cross_validate_sequence_segmenter2,
-        (boost::python::arg("samples"), boost::python::arg("segments"), boost::python::arg("folds"), boost::python::arg("params")=segmenter_params()));
+    m.def("cross_validate_sequence_segmenter", cross_validate_sequence_segmenter1,
+        (py::arg("samples"), py::arg("segments"), py::arg("folds"), py::arg("params")=segmenter_params()));
+    m.def("cross_validate_sequence_segmenter", cross_validate_sequence_segmenter2,
+        (py::arg("samples"), py::arg("segments"), py::arg("folds"), py::arg("params")=segmenter_params()));
 }
 
 

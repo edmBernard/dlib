@@ -75,11 +75,11 @@ template <typename trainer_type>
 double get_c_class2 ( const trainer_type& trainer) { return trainer.get_c_class2(); }
 
 template <typename trainer_type>
-boost::python::class_<trainer_type> setup_trainer (
+py::class_<trainer_type> setup_trainer (
     const std::string& name
 )
 {
-    return boost::python::class_<trainer_type>(name.c_str())
+    return py::class_<trainer_type>(name.c_str())
         .def("train", train<trainer_type>)
         .def("set_c", set_c<trainer_type>)
         .add_property("c_class1", get_c_class1<trainer_type>, set_c_class1<trainer_type>)
@@ -88,7 +88,7 @@ boost::python::class_<trainer_type> setup_trainer (
 }
 
 template <typename trainer_type>
-boost::python::class_<trainer_type> setup_trainer2 (
+py::class_<trainer_type> setup_trainer2 (
     const std::string& name
 )
 {
@@ -165,44 +165,44 @@ const binary_test _cross_validate_trainer_t (
 
 // ----------------------------------------------------------------------------------------
 
-void bind_svm_c_trainer()
+void bind_svm_c_trainer(py::model& m)
 {
     {
         typedef svm_c_trainer<radial_basis_kernel<sample_type> > T;
         setup_trainer2<T>("svm_c_trainer_radial_basis")
             .add_property("gamma", get_gamma, set_gamma);
-        boost::python::def("cross_validate_trainer", _cross_validate_trainer<T>, 
-            (boost::python::arg("trainer"),boost::python::arg("x"),boost::python::arg("y"),boost::python::arg("folds")));
-        boost::python::def("cross_validate_trainer_threaded", _cross_validate_trainer_t<T>, 
-            (boost::python::arg("trainer"),boost::python::arg("x"),boost::python::arg("y"),boost::python::arg("folds"),boost::python::arg("num_threads")));
+        m.def("cross_validate_trainer", _cross_validate_trainer<T>, 
+            (py::arg("trainer"),py::arg("x"),py::arg("y"),py::arg("folds")));
+        m.def("cross_validate_trainer_threaded", _cross_validate_trainer_t<T>, 
+            (py::arg("trainer"),py::arg("x"),py::arg("y"),py::arg("folds"),py::arg("num_threads")));
     }
 
     {
         typedef svm_c_trainer<sparse_radial_basis_kernel<sparse_vect> > T;
         setup_trainer2<T>("svm_c_trainer_sparse_radial_basis")
             .add_property("gamma", get_gamma_sparse, set_gamma_sparse);
-        boost::python::def("cross_validate_trainer", _cross_validate_trainer<T>, 
-            (boost::python::arg("trainer"),boost::python::arg("x"),boost::python::arg("y"),boost::python::arg("folds")));
-        boost::python::def("cross_validate_trainer_threaded", _cross_validate_trainer_t<T>, 
-            (boost::python::arg("trainer"),boost::python::arg("x"),boost::python::arg("y"),boost::python::arg("folds"),boost::python::arg("num_threads")));
+        m.def("cross_validate_trainer", _cross_validate_trainer<T>, 
+            (py::arg("trainer"),py::arg("x"),py::arg("y"),py::arg("folds")));
+        m.def("cross_validate_trainer_threaded", _cross_validate_trainer_t<T>, 
+            (py::arg("trainer"),py::arg("x"),py::arg("y"),py::arg("folds"),py::arg("num_threads")));
     }
 
     {
         typedef svm_c_trainer<histogram_intersection_kernel<sample_type> > T;
         setup_trainer2<T>("svm_c_trainer_histogram_intersection");
-        boost::python::def("cross_validate_trainer", _cross_validate_trainer<T>, 
-            (boost::python::arg("trainer"),boost::python::arg("x"),boost::python::arg("y"),boost::python::arg("folds")));
-        boost::python::def("cross_validate_trainer_threaded", _cross_validate_trainer_t<T>, 
-            (boost::python::arg("trainer"),boost::python::arg("x"),boost::python::arg("y"),boost::python::arg("folds"),boost::python::arg("num_threads")));
+        m.def("cross_validate_trainer", _cross_validate_trainer<T>, 
+            (py::arg("trainer"),py::arg("x"),py::arg("y"),py::arg("folds")));
+        m.def("cross_validate_trainer_threaded", _cross_validate_trainer_t<T>, 
+            (py::arg("trainer"),py::arg("x"),py::arg("y"),py::arg("folds"),py::arg("num_threads")));
     }
 
     {
         typedef svm_c_trainer<sparse_histogram_intersection_kernel<sparse_vect> > T;
         setup_trainer2<T>("svm_c_trainer_sparse_histogram_intersection");
-        boost::python::def("cross_validate_trainer", _cross_validate_trainer<T>, 
-            (boost::python::arg("trainer"),boost::python::arg("x"),boost::python::arg("y"),boost::python::arg("folds")));
-        boost::python::def("cross_validate_trainer_threaded", _cross_validate_trainer_t<T>, 
-            (boost::python::arg("trainer"),boost::python::arg("x"),boost::python::arg("y"),boost::python::arg("folds"),boost::python::arg("num_threads")));
+        m.def("cross_validate_trainer", _cross_validate_trainer<T>, 
+            (py::arg("trainer"),py::arg("x"),py::arg("y"),py::arg("folds")));
+        m.def("cross_validate_trainer_threaded", _cross_validate_trainer_t<T>, 
+            (py::arg("trainer"),py::arg("x"),py::arg("y"),py::arg("folds"),py::arg("num_threads")));
     }
 
     {
@@ -216,10 +216,10 @@ void bind_svm_c_trainer()
             .def("be_verbose", &T::be_verbose)
             .def("be_quiet", &T::be_quiet);
 
-        boost::python::def("cross_validate_trainer", _cross_validate_trainer<T>, 
-            (boost::python::arg("trainer"),boost::python::arg("x"),boost::python::arg("y"),boost::python::arg("folds")));
-        boost::python::def("cross_validate_trainer_threaded", _cross_validate_trainer_t<T>, 
-            (boost::python::arg("trainer"),boost::python::arg("x"),boost::python::arg("y"),boost::python::arg("folds"),boost::python::arg("num_threads")));
+        m.def("cross_validate_trainer", _cross_validate_trainer<T>, 
+            (py::arg("trainer"),py::arg("x"),py::arg("y"),py::arg("folds")));
+        m.def("cross_validate_trainer_threaded", _cross_validate_trainer_t<T>, 
+            (py::arg("trainer"),py::arg("x"),py::arg("y"),py::arg("folds"),py::arg("num_threads")));
     }
 
     {
@@ -233,10 +233,10 @@ void bind_svm_c_trainer()
             .def("be_verbose", &T::be_verbose)
             .def("be_quiet", &T::be_quiet);
 
-        boost::python::def("cross_validate_trainer", _cross_validate_trainer<T>, 
-            (boost::python::arg("trainer"),boost::python::arg("x"),boost::python::arg("y"),boost::python::arg("folds")));
-        boost::python::def("cross_validate_trainer_threaded", _cross_validate_trainer_t<T>, 
-            (boost::python::arg("trainer"),boost::python::arg("x"),boost::python::arg("y"),boost::python::arg("folds"),boost::python::arg("num_threads")));
+        m.def("cross_validate_trainer", _cross_validate_trainer<T>, 
+            (py::arg("trainer"),py::arg("x"),py::arg("y"),py::arg("folds")));
+        m.def("cross_validate_trainer_threaded", _cross_validate_trainer_t<T>, 
+            (py::arg("trainer"),py::arg("x"),py::arg("y"),py::arg("folds"),py::arg("num_threads")));
     }
 }
 

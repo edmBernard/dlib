@@ -4,6 +4,7 @@
 #define DLIB_PYaSSERT_Hh_
 
 #include <boost/python.hpp>
+#include <pybind11/pybind11.h>
 
 #define pyassert(_exp,_message)                                             \
     {if ( !(_exp) )                                                         \

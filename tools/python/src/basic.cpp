@@ -149,10 +149,10 @@ unsigned long range_len(const std::pair<unsigned long, unsigned long>& r)
 template <typename T>
 void resize(T& v, unsigned long n) { v.resize(n); }
 
-void bind_basic_types() 
+void bind_basic_types(py::model& m) 
 {
-    boost::python::class_<std::vector<double> >("array", "This object represents a 1D array of floating point numbers. "
-        "Moreover, it binds directly to the C++ type std::vector<double>.", boost::python::init<>() 
+    py::class_<std::vector<double> >(m, "array", "This object represents a 1D array of floating point numbers. "
+        "Moreover, it binds directly to the C++ type std::vector<double>.", py::init<>() 
         )
         .def(boost::python::vector_indexing_suite<std::vector<double> >())
         .def("__init__", boost::python::make_constructor(&array_from_object))
@@ -162,7 +162,7 @@ void bind_basic_types()
         .def("resize", resize<std::vector<double> >)
         .def_pickle(serialize_pickle<std::vector<double> >());
 
-    boost::python::class_<std::vector<matrix<double,0,1> > >("vectors", "This object is an array of vector objects.")
+    py::class_<std::vector<matrix<double,0,1> > >(m, "vectors", "This object is an array of vector objects.")
         .def(boost::python::vector_indexing_suite<std::vector<matrix<double,0,1> > >())
         .def("clear", &std::vector<matrix<double,0,1> >::clear)
         .def("resize", resize<std::vector<matrix<double,0,1> > >)
@@ -170,7 +170,7 @@ void bind_basic_types()
 
     {
     typedef std::vector<std::vector<matrix<double,0,1> > > type;
-    boost::python::class_<type>("vectorss", "This object is an array of arrays of vector objects.")
+    py::class_<type>(m, "vectorss", "This object is an array of arrays of vector objects.")
         .def(boost::python::vector_indexing_suite<type>())
         .def("clear", &type::clear)
         .def("resize", resize<type>)
@@ -178,8 +178,8 @@ void bind_basic_types()
     }
 
     typedef pair<unsigned long,unsigned long> range_type;
-    boost::python::class_<range_type>("range", "This object is used to represent a range of elements in an array.", boost::python::init<>() )
-        .def(boost::python::init<unsigned long,unsigned long>())
+    py::class_<range_type>(m, "range", "This object is used to represent a range of elements in an array.", py::init<>() )
+        .def(py::init<unsigned long,unsigned long>())
         .def_readwrite("begin",&range_type::first, "The index of the first element in the range.  This is represented using an unsigned integer.")
         .def_readwrite("end",&range_type::second, "One past the index of the last element in the range.  This is represented using an unsigned integer.")
         .def("__str__", range__str__)
@@ -188,13 +188,13 @@ void bind_basic_types()
         .def("__len__", &range_len)
         .def_pickle(serialize_pickle<range_type>());
 
-    boost::python::class_<range_iter>("_range_iter")
+    py::class_<range_iter>(m, "_range_iter")
         .def("next", &range_iter::next)
         .def("__next__", &range_iter::next);
 
     {
     typedef std::vector<std::pair<unsigned long, unsigned long> > type;
-    boost::python::class_<type>("ranges", "This object is an array of range objects.")
+    py::class_<type>(m, "ranges", "This object is an array of range objects.")
         .def(boost::python::vector_indexing_suite<type>())
         .def("clear", &type::clear)
         .def("resize", resize<type>)
@@ -203,7 +203,7 @@ void bind_basic_types()
 
     {
     typedef std::vector<std::vector<std::pair<unsigned long, unsigned long> > > type;
-    boost::python::class_<type>("rangess", "This object is an array of arrays of range objects.")
+    py::class_<type>(m, "rangess", "This object is an array of arrays of range objects.")
         .def(boost::python::vector_indexing_suite<type>())
         .def("clear", &type::clear)
         .def("resize", resize<type>)
@@ -212,15 +212,15 @@ void bind_basic_types()
 
 
     typedef pair<unsigned long,double> pair_type;
-    boost::python::class_<pair_type>("pair", "This object is used to represent the elements of a sparse_vector.", boost::python::init<>() )
-        .def(boost::python::init<unsigned long,double>())
+    py::class_<pair_type>(m, "pair", "This object is used to represent the elements of a sparse_vector.", py::init<>() )
+        .def(py::init<unsigned long,double>())
         .def_readwrite("first",&pair_type::first, "This field represents the index/dimension number.")
         .def_readwrite("second",&pair_type::second, "This field contains the value in a vector at dimension specified by the first field.")
         .def("__str__", pair__str__)
         .def("__repr__", pair__repr__)
         .def_pickle(serialize_pickle<pair_type>());
 
-    boost::python::class_<std::vector<pair_type> >("sparse_vector", 
+    py::class_<std::vector<pair_type> >(m, "sparse_vector", 
 "This object represents the mathematical idea of a sparse column vector.  It is    \n\
 simply an array of dlib.pair objects, each representing an index/value pair in    \n\
 the vector.  Any elements of the vector which are missing are implicitly set to    \n\
@@ -242,7 +242,7 @@ dlib.make_sparse_vector() on it.   "
         .def("resize", resize<std::vector<pair_type > >)
         .def_pickle(serialize_pickle<std::vector<pair_type> >());
 
-    boost::python::class_<std::vector<std::vector<pair_type> > >("sparse_vectors", "This object is an array of sparse_vector objects.")
+    py::class_<std::vector<std::vector<pair_type> > >(m, "sparse_vectors", "This object is an array of sparse_vector objects.")
         .def(boost::python::vector_indexing_suite<std::vector<std::vector<pair_type> > >())
         .def("clear", &std::vector<std::vector<pair_type> >::clear)
         .def("resize", resize<std::vector<std::vector<pair_type> > >)
@@ -250,7 +250,7 @@ dlib.make_sparse_vector() on it.   "
 
     {
     typedef std::vector<std::vector<std::vector<pair_type> > > type;
-    boost::python::class_<type>("sparse_vectorss", "This object is an array of arrays of sparse_vector objects.")
+    py::class_<type>(m, "sparse_vectorss", "This object is an array of arrays of sparse_vector objects.")
         .def(boost::python::vector_indexing_suite<type>())
         .def("clear", &type::clear)
         .def("resize", resize<type>)
