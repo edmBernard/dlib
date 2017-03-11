@@ -55,7 +55,7 @@ string cv__repr__ (const cv& v)
 
 std::shared_ptr<cv> cv_from_object(py::object obj)
 {
-    boost::python::extract<long> thesize(obj);
+    py::cast(long) thesize(obj); // TODO not sure
     if (thesize.check())
     {
         long nr = thesize;
@@ -69,7 +69,7 @@ std::shared_ptr<cv> cv_from_object(py::object obj)
         std::shared_ptr<cv> temp(new cv(nr));
         for ( long r = 0; r < nr; ++r)
         {
-            (*temp)(r) = boost::python::extract<double>(obj[r]);
+            (*temp)(r) = obj[r].cast<double>();
         }
         return temp;
     }

@@ -243,7 +243,7 @@ namespace dlib
         // Now copy the data into dlib based objects.
         for (unsigned long i = 0; i < num_detectors; ++i)
         {
-            vector_detectors.push_back(boost::python::extract<simple_object_detector >(detectors[i]));
+            vector_detectors.push_back(detectors[i].cast<simple_object_detector>());
         }
         
         std::vector<double> detection_confidences;

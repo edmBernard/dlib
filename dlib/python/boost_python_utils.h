@@ -41,7 +41,7 @@ std::vector<T> python_list_to_vector (
     std::vector<T> vect(len(obj));
     for (unsigned long i = 0; i < vect.size(); ++i)
     {
-        vect[i] = boost::python::extract<T>(obj[i]);
+        vect[i] = obj[i].cast<T>()
     }
     return vect;
 }

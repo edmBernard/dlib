@@ -20,7 +20,7 @@ full_object_detection run_predictor (
         py::object rect
 )
 {
-    rectangle box = boost::python::extract<rectangle>(rect);
+    rectangle box = rect.cast<rectangle>();
     if (is_gray_python_image(img))
     {
         return predictor(numpy_gray_image(img), box);
@@ -72,10 +72,10 @@ std::shared_ptr<full_object_detection> full_obj_det_init(py::object& pyrect, py:
 {
     const unsigned long num_parts = len(pyparts);
     std::vector<point> parts(num_parts);
-    rectangle rect = boost::python::extract<rectangle>(pyrect);
+    rectangle rect = pyrect.cast<rectangle>();
 
     for (unsigned long j = 0; j < num_parts; ++j)
-        parts[j] = boost::python::extract<point>(pyparts[j]);
+        parts[j] = pyparts[j].cast<point>();
 
     return std::shared_ptr<full_object_detection>(new full_object_detection(rect, parts));
 }
@@ -126,7 +126,7 @@ inline double test_shape_predictor_with_images_py (
     {
         const unsigned long num_boxes = len(pydetections[i]);
         for (unsigned long j = 0; j < num_boxes; ++j)
-            detections[i].push_back(boost::python::extract<full_object_detection>(pydetections[i][j]));
+            detections[i].push_back(pydetections[i][j].cast<full_object_detection>());
 
         pyimage_to_dlib_image(pyimages[i], images[i]);
         if (num_scales > 0)
@@ -134,7 +134,7 @@ inline double test_shape_predictor_with_images_py (
             if (num_boxes != len(pyscales[i]))
                 throw dlib::error("The length of the scales list must match the length of the detections list.");
             for (unsigned long j = 0; j < num_boxes; ++j)
-                scales[i].push_back(boost::python::extract<double>(pyscales[i][j]));
+                scales[i].push_back(pyscales[i][j].cast<double>());
         }
     }
 

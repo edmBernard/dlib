@@ -35,7 +35,7 @@ void images_and_nested_params_to_dlib(
     {
         const unsigned long num_params = len(pyparams[i]);
         for (unsigned long j = 0; j < num_params; ++j)
-            params[i].push_back(boost::python::extract<param_type>(pyparams[i][j]));
+            params[i].push_back(pyparams[i][j].cast<param_type>());
 
         pyimage_to_dlib_image(pyimages[i], images[i]);
     }

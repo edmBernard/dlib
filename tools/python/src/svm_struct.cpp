@@ -40,7 +40,7 @@ public:
         feature_vector_type& psi 
     ) const 
     {
-        psi = boost::python::extract<feature_vector_type&>(problem.attr("get_truth_joint_feature_vector")(idx));
+        psi = problem.attr("get_truth_joint_feature_vector")(idx).cast<feature_vector_type&>(); //TODO not sure
     }
 
     virtual void separation_oracle (
@@ -53,15 +53,26 @@ public:
         py::object res = problem.attr("separation_oracle")(idx,boost::ref(current_solution));
         pyassert(len(res) == 2, "separation_oracle() must return two objects, the loss and the psi vector");
         // let the user supply the output arguments in any order.
-        if (boost::python::extract<double>(res[0]).check())
+
+        bool castable = true; // TODO find better way
+        try 
+        { 
+            res[0].cast<double>();
+        } 
+        catch ( const py::cast_error & ) 
+        { 
+            castable = false; 
+        } 
+
+        if (castable)
         {
-            loss = boost::python::extract<double>(res[0]);
-            psi = boost::python::extract<feature_vector_type&>(res[1]);
+            loss = res[0].cast<double>();
+            psi = res[1].cast<feature_vector_type&>();
         }
         else
         {
-            psi = boost::python::extract<feature_vector_type&>(res[0]);
-            loss = boost::python::extract<double>(res[1]);
+            psi = res[0].cast<feature_vector_type&>();
+            loss = res[1].cast<double>();
         }
     }
 
@@ -79,22 +90,22 @@ matrix<double,0,1> solve_structural_svm_problem_impl(
     py::object problem
 )
 {
-    const double C = boost::python::extract<double>(problem.attr("C"));
-    const bool be_verbose = hasattr(problem,"be_verbose") && boost::python::extract<bool>(problem.attr("be_verbose"));
+    const double C = problem.attr("C").cast<double>();
+    const bool be_verbose = hasattr(problem,"be_verbose") && problem.attr("be_verbose").cast<bool>();
     const bool use_sparse_feature_vectors = hasattr(problem,"use_sparse_feature_vectors") && 
-                                            boost::python::extract<bool>(problem.attr("use_sparse_feature_vectors"));
+                                            problem.attr("use_sparse_feature_vectors").cast<bool>();
     const bool learns_nonnegative_weights = hasattr(problem,"learns_nonnegative_weights") && 
-                                            boost::python::extract<bool>(problem.attr("learns_nonnegative_weights"));
+                                            problem.attr("learns_nonnegative_weights").cast<bool>();
 
     double eps = 0.001;
     unsigned long max_cache_size = 10;
     if (hasattr(problem, "epsilon"))
-        eps = boost::python::extract<double>(problem.attr("epsilon"));
+        eps = problem.attr("epsilon").cast<double>();
     if (hasattr(problem, "max_cache_size"))
-        max_cache_size = boost::python::extract<double>(problem.attr("max_cache_size"));
+        max_cache_size = problem.attr("max_cache_size").cast<double>();
 
-    const long num_samples = boost::python::extract<long>(problem.attr("num_samples"));
-    const long num_dimensions = boost::python::extract<long>(problem.attr("num_dimensions"));
+    const long num_samples = problem.attr("num_samples").cast<long>();
+    const long num_dimensions = problem.attr("num_dimensions").cast<long>();
 
     pyassert(num_samples > 0, "You can't train a Structural-SVM if you don't have any training samples.");
 
@@ -133,7 +144,7 @@ matrix<double,0,1> solve_structural_svm_problem(
 )
 {
     // Check if the python code is using sparse or dense vectors to represent PSI()
-    boost::python::extract<matrix<double,0,1> > isdense(problem.attr("get_truth_joint_feature_vector")(0));
+    py::cast(matrix<double,0,1>) isdense(problem.attr("get_truth_joint_feature_vector")(0)); // TODO not sure
     if (isdense.check())
         return solve_structural_svm_problem_impl<matrix<double,0,1> >(problem);
     else

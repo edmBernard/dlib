@@ -11,6 +11,7 @@
 #include <dlib/array.h>
 #include <dlib/pixel.h>
 
+namespace py = pybind11;
 // ----------------------------------------------------------------------------------------
 
 template <typename T>
@@ -18,8 +19,7 @@ void validate_numpy_array_type (
     const py::object& obj
 )
 {
-    namespace py = pybind11;
-    const char ch = boost::python::extract<char>(obj.attr("dtype").attr("char"));
+    const char ch = obj.attr("dtype").attr("char").cast<char>();
 
     if (dlib::is_same_type<T,double>::value && ch != 'd')
         throw dlib::error("Expected numpy.ndarray of float64");

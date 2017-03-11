@@ -51,7 +51,7 @@ std::shared_ptr<matrix<double> > make_matrix_from_size(long nr, long nc)
 
 std::shared_ptr<matrix<double> > from_object(py::object obj)
 {
-    py::tuple s = boost::python::extract<py::tuple>(obj.attr("shape"));
+    py::tuple s = boost::python::extract<py::tuple>(obj.attr("shape")); // TODO cast in which side py<->cpp
     if (boost::python::len(s) != 2)
     {
         PyErr_SetString( PyExc_IndexError, "Input must be a matrix or some kind of 2D array." 
@@ -59,14 +59,14 @@ std::shared_ptr<matrix<double> > from_object(py::object obj)
         boost::python::throw_error_already_set();   
     }
 
-    const long nr = boost::python::extract<long>(s[0]);
-    const long nc = boost::python::extract<long>(s[1]);
+    const long nr = s[0].cast<long>();
+    const long nc = s[1].cast<long>();
     std::shared_ptr<matrix<double> > temp(new matrix<double>(nr,nc));
     for ( long r = 0; r < nr; ++r)
     {
         for (long c = 0; c < nc; ++c)
         {
-            (*temp)(r,c) = boost::python::extract<double>(obj[py::make_tuple(r,c)]);
+            (*temp)(r,c) = obj[py::make_tuple(r,c)].cast<double>();
         }
     }
     return temp;
@@ -75,7 +75,18 @@ std::shared_ptr<matrix<double> > from_object(py::object obj)
 std::shared_ptr<matrix<double> > from_list(py::list l)
 {
     const long nr = boost::python::len(l);
-    if (boost::python::extract<py::list>(l[0]).check())
+
+    bool castable = true; // TODO find better way
+    try 
+    { 
+        py::cast(l[0]);
+    } 
+    catch ( const py::cast_error & ) 
+    { 
+        castable = false; 
+    }
+
+    if (castable)
     {
         const long nc = boost::python::len(l[0]);
         // make sure all the other rows have the same length
@@ -88,7 +99,7 @@ std::shared_ptr<matrix<double> > from_list(py::list l)
         {
             for (long c = 0; c < nc; ++c)
             {
-                (*temp)(r,c) = boost::python::extract<double>(l[r][c]);
+                (*temp)(r,c) = l[r][c].cast<double>();
             }
         }
         return temp;
@@ -99,7 +110,7 @@ std::shared_ptr<matrix<double> > from_list(py::list l)
         std::shared_ptr<matrix<double> > temp(new matrix<double>(nr,1));
         for ( long r = 0; r < nr; ++r)
         {
-            (*temp)(r) = boost::python::extract<double>(l[r]);
+            (*temp)(r) = l[r].cast<double>();
         }
         return temp;
     }

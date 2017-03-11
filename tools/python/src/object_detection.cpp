@@ -104,9 +104,9 @@ inline void find_candidate_object_locations_py (
     if (boost::python::len(pykvals) != 3)
         throw dlib::error("kvals must be a tuple with three elements for start, end, num.");
 
-    double start = boost::python::extract<double>(pykvals[0]);
-    double end   = boost::python::extract<double>(pykvals[1]);
-    long num     = boost::python::extract<long>(pykvals[2]);
+    double start = pykvals[0].cast<double>();
+    double end   = pykvals[1].cast<double>();
+    long num     = pykvals[2].cast<long>();
     matrix_range_exp<double> kvals = linspace(start, end, num);
 
     std::vector<rectangle> rects;
@@ -114,7 +114,7 @@ inline void find_candidate_object_locations_py (
     // Copy any rectangles in the input pyboxes into rects so that any rectangles will be
     // properly deduped in the resulting output.
     for (long i = 0; i < count; ++i)
-        rects.push_back(boost::python::extract<rectangle>(pyboxes[i]));
+        rects.push_back(pyboxes[i].cast<rectangle>());
     // Find candidate objects
     find_candidate_object_locations(image, rects, kvals, min_size, max_merging_iterations);
 
