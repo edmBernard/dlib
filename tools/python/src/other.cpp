@@ -3,6 +3,7 @@
 
 #include <dlib/python.h>
 #include <memory>
+#include <tuple>
 #include <dlib/matrix.h>
 #include <dlib/data_io.h>
 #include <dlib/sparse_vector.h>
@@ -31,14 +32,14 @@ void _make_sparse_vector2 (
         make_sparse_vector_inplace(v[i]);
 }
 
-boost::python::tuple _load_libsvm_formatted_data(
+std::tuple _load_libsvm_formatted_data(
     const std::string& file_name
 ) 
 { 
     std::vector<sparse_vect> samples;
     std::vector<double> labels;
     load_libsvm_formatted_data(file_name, samples, labels); 
-    return boost::python::make_tuple(samples, labels);
+    return std::make_tuple(samples, labels);
 }
 
 void _save_libsvm_formatted_data (

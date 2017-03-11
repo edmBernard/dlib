@@ -4,6 +4,7 @@
 #define DLIB_SIMPLE_OBJECT_DETECTOR_PY_H__
 
 #include <dlib/python.h>
+#include <tuple>
 #include <dlib/matrix.h>
 #include <boost/python/args.hpp>
 #include <dlib/geometry.h>
@@ -209,13 +210,13 @@ namespace dlib
                                           detection_confidences, weight_indices);
     }
 
-    inline boost::python::tuple run_rect_detector (
+    inline std::tuple run_rect_detector (
         dlib::simple_object_detector& detector,
         boost::python::object img,
         const unsigned int upsampling_amount,
         const double adjust_threshold)
     {
-        boost::python::tuple t;
+        std::tuple t;
 
         std::vector<double> detection_confidences;
         std::vector<double> weight_indices;
@@ -225,17 +226,17 @@ namespace dlib
                                                 adjust_threshold,
                                                 detection_confidences, weight_indices);
 
-        return boost::python::make_tuple(rectangles,
+        return std::make_tuple(rectangles,
                                          detection_confidences, weight_indices);
     }
 
-    inline boost::python::tuple run_multiple_rect_detectors (
+    inline std::tuple run_multiple_rect_detectors (
         boost::python::list& detectors,
         boost::python::object img,
         const unsigned int upsampling_amount,
         const double adjust_threshold)
     {
-        boost::python::tuple t;
+        std::tuple t;
 
         std::vector<simple_object_detector > vector_detectors;
         const unsigned long num_detectors = len(detectors);
@@ -253,7 +254,7 @@ namespace dlib
                                                 adjust_threshold,
                                                 detection_confidences, weight_indices);
 
-        return boost::python::make_tuple(rectangles,
+        return std::make_tuple(rectangles,
                                          detection_confidences, weight_indices);
     }
 

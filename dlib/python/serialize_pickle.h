@@ -6,13 +6,14 @@
 #include <dlib/serialize.h>
 #include <boost/python.hpp>
 #include <pybind11/pybind11.h>
+#include <tuple>
 #include <sstream>
 #include <dlib/vectorstream.h>
 
 template <typename T>
 struct serialize_pickle : boost::python::pickle_suite
 {
-    static boost::python::tuple getstate(
+    static std::tuple getstate(
         const T& item 
     )
     {
@@ -21,13 +22,13 @@ struct serialize_pickle : boost::python::pickle_suite
         buf.reserve(5000);
         vectorstream sout(buf);
         serialize(item, sout);
-        return boost::python::make_tuple(boost::python::handle<>(
+        return std::make_tuple(boost::python::handle<>(
                 PyBytes_FromStringAndSize(buf.size()?&buf[0]:0, buf.size())));
     }
 
     static void setstate(
         T& item, 
-        boost::python::tuple state
+        std::tuple state
     )
     {
         using namespace dlib;

@@ -31,13 +31,13 @@ PYBIND11_PLUGIN(dlib)
     py::module m("dlib", "dlib python binding");
     // Disable printing of the C++ function signature in the python __doc__ string
     // since it is full of huge amounts of template clutter.
-    boost::python::docstring_options options(true,true,false);
+    // boost::python::docstring_options options(true,true,false); // TODO replace by pybind11 equivalent
 
 #define DLIB_QUOTE_STRING(x) DLIB_QUOTE_STRING2(x)
 #define DLIB_QUOTE_STRING2(x) #x
 
-    boost::python::scope().attr("__version__") = DLIB_QUOTE_STRING(DLIB_VERSION);
-
+    m.attr("__version__") = DLIB_QUOTE_STRING(DLIB_VERSION);
+    
     bind_matrix(m);
     bind_vector(m);
     bind_svm_c_trainer(m);

@@ -3,6 +3,7 @@
 
 #include <dlib/python.h>
 #include <memory>
+#include <tuple>
 #include <dlib/matrix.h>
 #include <boost/python/slice.hpp>
 #include <dlib/geometry/vector.h>
@@ -130,9 +131,9 @@ cv cv__getitem2__(cv& m, boost::python::slice r)
     return temp;
 }
 
-boost::python::tuple cv_get_matrix_size(cv& m)
+std::tuple cv_get_matrix_size(cv& m)
 {
-    return boost::python::make_tuple(m.nr(), m.nc());
+    return std::make_tuple(m.nr(), m.nc());
 }
 
 // ----------------------------------------------------------------------------------------

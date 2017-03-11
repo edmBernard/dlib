@@ -2,6 +2,7 @@
 // License: Boost Software License   See LICENSE.txt for the full license.
 
 #include <dlib/python.h>
+#include <tuple>
 #include <dlib/matrix.h>
 #include <boost/python/args.hpp>
 #include <dlib/geometry.h>
@@ -87,7 +88,7 @@ inline simple_test_results test_simple_object_detector_py_with_images_py (
 inline void find_candidate_object_locations_py (
     boost::python::object pyimage,
     boost::python::list& pyboxes,
-    boost::python::tuple pykvals,
+    std::tuple pykvals,
     unsigned long min_size,
     unsigned long max_merging_iterations
 )
@@ -180,7 +181,7 @@ Values higher than 2 (default) are not recommended.");
     // Here, kvals is actually the result of linspace(start, end, num) and it is different from kvals used
     // in find_candidate_object_locations(). See dlib/image_transforms/segment_image_abstract.h for more details.
     m.def("find_candidate_object_locations", find_candidate_object_locations_py,
-            (py::arg("image"), py::arg("rects"), py::arg("kvals")=boost::python::make_tuple(50, 200, 3),
+            (py::arg("image"), py::arg("rects"), py::arg("kvals")=std::make_tuple(50, 200, 3),
              py::arg("min_size")=20, py::arg("max_merging_iterations")=50),
 "Returns found candidate objects\n\
 requires\n\
