@@ -72,10 +72,10 @@ std::shared_ptr<matrix<double> > from_object(py::object obj)
     return temp;
 }
 
-std::shared_ptr<matrix<double> > from_list(boost::python::list l)
+std::shared_ptr<matrix<double> > from_list(py::list l)
 {
     const long nr = boost::python::len(l);
-    if (boost::python::extract<boost::python::list>(l[0]).check())
+    if (boost::python::extract<py::list>(l[0]).check())
     {
         const long nc = boost::python::len(l[0]);
         // make sure all the other rows have the same length

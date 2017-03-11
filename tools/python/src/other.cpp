@@ -54,7 +54,7 @@ void _save_libsvm_formatted_data (
 
 // ----------------------------------------------------------------------------------------
 
-boost::python::list _max_cost_assignment (
+py::list _max_cost_assignment (
     const matrix<double>& cost
 )
 {
@@ -70,7 +70,7 @@ boost::python::list _max_cost_assignment (
 
 double _assignment_cost (
     const matrix<double>& cost,
-    const boost::python::list& assignment
+    const py::list& assignment
 )
 {
     return assignment_cost(cost, python_list_to_vector<long>(assignment));

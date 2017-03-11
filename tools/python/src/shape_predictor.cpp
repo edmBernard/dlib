@@ -83,8 +83,8 @@ std::shared_ptr<full_object_detection> full_obj_det_init(py::object& pyrect, py:
 // ----------------------------------------------------------------------------------------
 
 inline shape_predictor train_shape_predictor_on_images_py (
-        const boost::python::list& pyimages,
-        const boost::python::list& pydetections,
+        const py::list& pyimages,
+        const py::list& pydetections,
         const shape_predictor_training_options& options
 )
 {
@@ -101,9 +101,9 @@ inline shape_predictor train_shape_predictor_on_images_py (
 
 
 inline double test_shape_predictor_with_images_py (
-        const boost::python::list& pyimages,
-        const boost::python::list& pydetections,
-        const boost::python::list& pyscales,
+        const py::list& pyimages,
+        const py::list& pydetections,
+        const py::list& pyscales,
         const shape_predictor& predictor
 )
 {
@@ -142,12 +142,12 @@ inline double test_shape_predictor_with_images_py (
 }
 
 inline double test_shape_predictor_with_images_no_scales_py (
-        const boost::python::list& pyimages,
-        const boost::python::list& pydetections,
+        const py::list& pyimages,
+        const py::list& pydetections,
         const shape_predictor& predictor
 )
 {
-    boost::python::list pyscales;
+    py::list pyscales;
     return test_shape_predictor_with_images_py(pyimages, pydetections, pyscales, predictor);
 }
 

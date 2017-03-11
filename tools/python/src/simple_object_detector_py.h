@@ -231,7 +231,7 @@ namespace dlib
     }
 
     inline py::tuple run_multiple_rect_detectors (
-        boost::python::list& detectors,
+        py::list& detectors,
         py::object img,
         const unsigned int upsampling_amount,
         const double adjust_threshold)

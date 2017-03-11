@@ -10,6 +10,8 @@
 #include <string>
 #include <dlib/serialize.h>
 
+namespace py = pybind11;
+
 inline bool hasattr(
     py::object obj, 
     const std::string& attr_name
@@ -45,7 +47,7 @@ std::vector<T> python_list_to_vector (
 }
 
 template <typename T>
-boost::python::list vector_to_python_list (
+py::list vector_to_python_list (
     const std::vector<T>& vect
 )
 /*!
@@ -53,7 +55,7 @@ boost::python::list vector_to_python_list (
         - converts a std::vector<T> into a python list object.
 !*/
 {
-    boost::python::list obj;
+    py::list obj;
     for (unsigned long i = 0; i < vect.size(); ++i)
         obj.append(vect[i]);
     return obj;

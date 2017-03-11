@@ -26,8 +26,8 @@ string print_simple_test_results(const simple_test_results& r)
 // ----------------------------------------------------------------------------------------
 
 inline simple_object_detector_py train_simple_object_detector_on_images_py (
-    const boost::python::list& pyimages,
-    const boost::python::list& pyboxes,
+    const py::list& pyimages,
+    const py::list& pyboxes,
     const simple_object_detector_training_options& options
 )
 {
@@ -44,8 +44,8 @@ inline simple_object_detector_py train_simple_object_detector_on_images_py (
 }
 
 inline simple_test_results test_simple_object_detector_with_images_py (
-        const boost::python::list& pyimages,
-        const boost::python::list& pyboxes,
+        const py::list& pyimages,
+        const py::list& pyboxes,
         simple_object_detector& detector,
         const unsigned int upsampling_amount
 )
@@ -65,8 +65,8 @@ inline simple_test_results test_simple_object_detector_with_images_py (
 // ----------------------------------------------------------------------------------------
 
 inline simple_test_results test_simple_object_detector_py_with_images_py (
-        const boost::python::list& pyimages,
-        const boost::python::list& pyboxes,
+        const py::list& pyimages,
+        const py::list& pyboxes,
         simple_object_detector_py& detector,
         const int upsampling_amount
 )
@@ -86,7 +86,7 @@ inline simple_test_results test_simple_object_detector_py_with_images_py (
 
 inline void find_candidate_object_locations_py (
     py::object pyimage,
-    boost::python::list& pyboxes,
+    py::list& pyboxes,
     py::tuple pykvals,
     unsigned long min_size,
     unsigned long max_merging_iterations
