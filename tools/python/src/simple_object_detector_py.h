@@ -210,13 +210,13 @@ namespace dlib
                                           detection_confidences, weight_indices);
     }
 
-    inline std::tuple run_rect_detector (
+    inline py::tuple run_rect_detector (
         dlib::simple_object_detector& detector,
         boost::python::object img,
         const unsigned int upsampling_amount,
         const double adjust_threshold)
     {
-        std::tuple t;
+        py::tuple t;
 
         std::vector<double> detection_confidences;
         std::vector<double> weight_indices;
@@ -226,17 +226,17 @@ namespace dlib
                                                 adjust_threshold,
                                                 detection_confidences, weight_indices);
 
-        return std::make_tuple(rectangles,
+        return py::make_tuple(rectangles,
                                          detection_confidences, weight_indices);
     }
 
-    inline std::tuple run_multiple_rect_detectors (
+    inline py::tuple run_multiple_rect_detectors (
         boost::python::list& detectors,
         boost::python::object img,
         const unsigned int upsampling_amount,
         const double adjust_threshold)
     {
-        std::tuple t;
+        py::tuple t;
 
         std::vector<simple_object_detector > vector_detectors;
         const unsigned long num_detectors = len(detectors);
@@ -254,7 +254,7 @@ namespace dlib
                                                 adjust_threshold,
                                                 detection_confidences, weight_indices);
 
-        return std::make_tuple(rectangles,
+        return py::make_tuple(rectangles,
                                          detection_confidences, weight_indices);
     }
 

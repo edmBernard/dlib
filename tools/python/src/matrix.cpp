@@ -51,7 +51,7 @@ std::shared_ptr<matrix<double> > make_matrix_from_size(long nr, long nc)
 
 std::shared_ptr<matrix<double> > from_object(boost::python::object obj)
 {
-    std::tuple s = boost::python::extract<std::tuple>(obj.attr("shape"));
+    py::tuple s = boost::python::extract<py::tuple>(obj.attr("shape"));
     if (boost::python::len(s) != 2)
     {
         PyErr_SetString( PyExc_IndexError, "Input must be a matrix or some kind of 2D array." 
@@ -66,7 +66,7 @@ std::shared_ptr<matrix<double> > from_object(boost::python::object obj)
     {
         for (long c = 0; c < nc; ++c)
         {
-            (*temp)(r,c) = boost::python::extract<double>(obj[std::make_tuple(r,c)]);
+            (*temp)(r,c) = boost::python::extract<double>(obj[py::make_tuple(r,c)]);
         }
     }
     return temp;
@@ -178,9 +178,9 @@ mat_row matrix_double__getitem__(matrix<double>& m, long r)
 }
 
 
-std::tuple get_matrix_size(matrix<double>& m)
+py::tuple get_matrix_size(matrix<double>& m)
 {
-    return std::make_tuple(m.nr(), m.nc());
+    return py::make_tuple(m.nr(), m.nc());
 }
 
 void bind_matrix(py::module& m)

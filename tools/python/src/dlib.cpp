@@ -57,5 +57,7 @@ PYBIND11_PLUGIN(dlib)
 #ifndef DLIB_NO_GUI_SUPPORT
     bind_gui(m);
 #endif
+
+    return m.ptr();
 }
 

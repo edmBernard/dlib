@@ -131,9 +131,9 @@ cv cv__getitem2__(cv& m, boost::python::slice r)
     return temp;
 }
 
-std::tuple cv_get_matrix_size(cv& m)
+py::tuple cv_get_matrix_size(cv& m)
 {
-    return std::make_tuple(m.nr(), m.nc());
+    return py::make_tuple(m.nr(), m.nc());
 }
 
 // ----------------------------------------------------------------------------------------
