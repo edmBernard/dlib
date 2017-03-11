@@ -101,7 +101,7 @@ inline void find_candidate_object_locations_py (
     else
         throw dlib::error("Unsupported image type, must be 8bit gray or RGB image.");
 
-    if (boost::python::len(pykvals) != 3)
+    if (py::len(pykvals) != 3)
         throw dlib::error("kvals must be a tuple with three elements for start, end, num.");
 
     double start = pykvals[0].cast<double>();

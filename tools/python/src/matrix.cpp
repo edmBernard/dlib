@@ -52,7 +52,7 @@ std::shared_ptr<matrix<double> > make_matrix_from_size(long nr, long nc)
 std::shared_ptr<matrix<double> > from_object(py::object obj)
 {
     py::tuple s = boost::python::extract<py::tuple>(obj.attr("shape")); // TODO cast in which side py<->cpp
-    if (boost::python::len(s) != 2)
+    if (py::len(s) != 2)
     {
         PyErr_SetString( PyExc_IndexError, "Input must be a matrix or some kind of 2D array." 
         );                                            
@@ -74,7 +74,7 @@ std::shared_ptr<matrix<double> > from_object(py::object obj)
 
 std::shared_ptr<matrix<double> > from_list(py::list l)
 {
-    const long nr = boost::python::len(l);
+    const long nr = py::len(l);
 
     bool castable = true; // TODO find better way
     try 
@@ -88,10 +88,10 @@ std::shared_ptr<matrix<double> > from_list(py::list l)
 
     if (castable)
     {
-        const long nc = boost::python::len(l[0]);
+        const long nc = py::len(l[0]);
         // make sure all the other rows have the same length
         for (long r = 1; r < nr; ++r)
-            pyassert(boost::python::len(l[r]) == nc, "All rows of a matrix must have the same number of columns.");
+            pyassert(py::len(l[r]) == nc, "All rows of a matrix must have the same number of columns.");
 
 
         std::shared_ptr<matrix<double> > temp(new matrix<double>(nr,nc));
