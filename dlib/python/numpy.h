@@ -15,7 +15,7 @@
 
 template <typename T>
 void validate_numpy_array_type (
-    const boost::python::object& obj
+    const py::object& obj
 )
 {
     namespace py = pybind11;
@@ -35,7 +35,7 @@ void validate_numpy_array_type (
 
 template <int dims>
 void get_numpy_ndarray_shape (
-    const boost::python::object& obj,
+    const py::object& obj,
     long (&shape)[dims]
 )
 /*!
@@ -74,7 +74,7 @@ void get_numpy_ndarray_shape (
 
 template <typename T, int dims>
 void get_numpy_ndarray_parts (
-    boost::python::object& obj,
+    py::object& obj,
     T*& data,
     dlib::array<T>& contig_buf,
     long (&shape)[dims]
@@ -124,7 +124,7 @@ void get_numpy_ndarray_parts (
 
 template <typename T, int dims>
 void get_numpy_ndarray_parts (
-    const boost::python::object& obj,
+    const py::object& obj,
     const T*& data,
     dlib::array<T>& contig_buf,
     long (&shape)[dims]

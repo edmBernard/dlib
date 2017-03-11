@@ -34,7 +34,7 @@ void image_window_set_image_simple_detector_py (
 
 void image_window_set_image (
     image_window& win,
-    boost::python::object img
+    py::object img
 )
 {
     if (is_gray_python_image(img))
@@ -73,14 +73,14 @@ void add_overlay_parts (
     win.add_overlay(render_face_detections(detection, color));
 }
 
-std::shared_ptr<image_window> make_image_window_from_image(boost::python::object img)
+std::shared_ptr<image_window> make_image_window_from_image(py::object img)
 {
     std::shared_ptr<image_window> win(new image_window);
     image_window_set_image(*win, img);
     return win;
 }
 
-std::shared_ptr<image_window> make_image_window_from_image_and_title(boost::python::object img, const string& title)
+std::shared_ptr<image_window> make_image_window_from_image_and_title(py::object img, const string& title)
 {
     std::shared_ptr<image_window> win(new image_window);
     image_window_set_image(*win, img);

@@ -11,7 +11,7 @@
 #include <dlib/serialize.h>
 
 inline bool hasattr(
-    boost::python::object obj, 
+    py::object obj, 
     const std::string& attr_name
 ) 
 /*!
@@ -29,7 +29,7 @@ inline bool hasattr(
 
 template <typename T>
 std::vector<T> python_list_to_vector (
-    const boost::python::object& obj
+    const py::object& obj
 )
 /*!
     ensures

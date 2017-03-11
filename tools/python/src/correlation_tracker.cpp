@@ -14,7 +14,7 @@ namespace py = pybind11;
 
 void start_track (
     correlation_tracker& tracker,
-    boost::python::object img,
+    py::object img,
     const drectangle& bounding_box
 )
 {
@@ -34,7 +34,7 @@ void start_track (
 
 void start_track_rec (
     correlation_tracker& tracker,
-    boost::python::object img,
+    py::object img,
     const rectangle& bounding_box
 )
 {
@@ -44,7 +44,7 @@ void start_track_rec (
 
 double update (
     correlation_tracker& tracker,
-    boost::python::object img
+    py::object img
 )
 {
     if (is_gray_python_image(img))
@@ -63,7 +63,7 @@ double update (
 
 double update_guess (
     correlation_tracker& tracker,
-    boost::python::object img,
+    py::object img,
     const drectangle& bounding_box
 )
 {
@@ -83,7 +83,7 @@ double update_guess (
 
 double update_guess_rec (
     correlation_tracker& tracker,
-    boost::python::object img,
+    py::object img,
     const rectangle& bounding_box
 )
 {

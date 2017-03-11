@@ -25,7 +25,7 @@ struct serialize_pickle : boost::python::pickle_suite
         buf.reserve(5000);
         vectorstream sout(buf);
         serialize(item, sout);
-        return py::make_tuple(boost::python::handle<>(
+        return py::make_tuple(py::handle<>(
                 PyBytes_FromStringAndSize(buf.size()?&buf[0]:0, buf.size())));
     }
 
@@ -56,9 +56,9 @@ struct serialize_pickle : boost::python::pickle_suite
             std::istringstream sin(temp);
             deserialize(item, sin);
         }
-        else if(PyBytes_Check(boost::python::object(state[0]).ptr()))
+        else if(PyBytes_Check(py::object(state[0]).ptr()))
         {
-            boost::python::object obj = state[0];
+            py::object obj = state[0];
             char* data = PyBytes_AsString(obj.ptr());
             unsigned long num = PyBytes_Size(obj.ptr());
             std::istringstream sin(std::string(data, num));

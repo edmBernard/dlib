@@ -38,7 +38,7 @@ public:
     }
 
     matrix<double,0,1> compute_face_descriptor (
-        boost::python::object img,
+        py::object img,
         const full_object_detection& face,
         const int num_jitters
     )
@@ -48,7 +48,7 @@ public:
     }
 
     std::vector<matrix<double,0,1>> compute_face_descriptors (
-        boost::python::object img,
+        py::object img,
         const std::vector<full_object_detection>& faces,
         const int num_jitters
     )

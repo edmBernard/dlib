@@ -16,7 +16,7 @@ using namespace dlib;
 namespace py = pybind11;
 
 
-std::shared_ptr<std::vector<double> > array_from_object(boost::python::object obj)
+std::shared_ptr<std::vector<double> > array_from_object(py::object obj)
 {
     boost::python::extract<long> thesize(obj);
     if (thesize.check())

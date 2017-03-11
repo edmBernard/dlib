@@ -11,7 +11,7 @@ using namespace std;
 namespace py = pybind11;
 
 template <typename dest_image_type>
-void pyimage_to_dlib_image(boost::python::object img, dest_image_type& image)
+void pyimage_to_dlib_image(py::object img, dest_image_type& image)
 {
     if (is_gray_python_image(img))
         assign_image(image, numpy_gray_image(img));
@@ -23,8 +23,8 @@ void pyimage_to_dlib_image(boost::python::object img, dest_image_type& image)
 
 template <typename image_array, typename param_type>
 void images_and_nested_params_to_dlib(
-        const boost::python::object& pyimages,
-        const boost::python::object& pyparams,
+        const py::object& pyimages,
+        const py::object& pyparams,
         image_array& images,
         std::vector<std::vector<param_type> >& params
 )

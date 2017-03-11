@@ -16,8 +16,8 @@ namespace py = pybind11;
 
 full_object_detection run_predictor (
         shape_predictor& predictor,
-        boost::python::object img,
-        boost::python::object rect
+        py::object img,
+        py::object rect
 )
 {
     rectangle box = boost::python::extract<rectangle>(rect);
@@ -68,7 +68,7 @@ std::vector<point> full_obj_det_parts (const full_object_detection& detection)
     return parts;
 }
 
-std::shared_ptr<full_object_detection> full_obj_det_init(boost::python::object& pyrect, boost::python::object& pyparts)
+std::shared_ptr<full_object_detection> full_obj_det_init(py::object& pyrect, py::object& pyparts)
 {
     const unsigned long num_parts = len(pyparts);
     std::vector<point> parts(num_parts);

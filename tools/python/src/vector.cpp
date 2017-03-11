@@ -53,7 +53,7 @@ string cv__repr__ (const cv& v)
     return sout.str();
 }
 
-std::shared_ptr<cv> cv_from_object(boost::python::object obj)
+std::shared_ptr<cv> cv_from_object(py::object obj)
 {
     boost::python::extract<long> thesize(obj);
     if (thesize.check())

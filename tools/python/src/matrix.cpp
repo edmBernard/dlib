@@ -49,7 +49,7 @@ std::shared_ptr<matrix<double> > make_matrix_from_size(long nr, long nc)
 }
 
 
-std::shared_ptr<matrix<double> > from_object(boost::python::object obj)
+std::shared_ptr<matrix<double> > from_object(py::object obj)
 {
     py::tuple s = boost::python::extract<py::tuple>(obj.attr("shape"));
     if (boost::python::len(s) != 2)

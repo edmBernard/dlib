@@ -85,7 +85,7 @@ inline simple_test_results test_simple_object_detector_py_with_images_py (
 // ----------------------------------------------------------------------------------------
 
 inline void find_candidate_object_locations_py (
-    boost::python::object pyimage,
+    py::object pyimage,
     boost::python::list& pyboxes,
     py::tuple pykvals,
     unsigned long min_size,

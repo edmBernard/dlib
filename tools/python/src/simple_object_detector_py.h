@@ -36,7 +36,7 @@ namespace dlib
 
     inline std::vector<dlib::rectangle> run_detector_with_upscale1 (
         dlib::simple_object_detector& detector,
-        boost::python::object img,
+        py::object img,
         const unsigned int upsampling_amount,
         const double adjust_threshold,
         std::vector<double>& detection_confidences,
@@ -116,7 +116,7 @@ namespace dlib
 
     inline std::vector<dlib::rectangle> run_detectors_with_upscale1 (
         std::vector<simple_object_detector >& detectors,
-        boost::python::object img,
+        py::object img,
         const unsigned int upsampling_amount,
         const double adjust_threshold,
         std::vector<double>& detection_confidences,
@@ -196,7 +196,7 @@ namespace dlib
 
     inline std::vector<dlib::rectangle> run_detector_with_upscale2 (
         dlib::simple_object_detector& detector,
-        boost::python::object img,
+        py::object img,
         const unsigned int upsampling_amount
 
     )
@@ -212,7 +212,7 @@ namespace dlib
 
     inline py::tuple run_rect_detector (
         dlib::simple_object_detector& detector,
-        boost::python::object img,
+        py::object img,
         const unsigned int upsampling_amount,
         const double adjust_threshold)
     {
@@ -232,7 +232,7 @@ namespace dlib
 
     inline py::tuple run_multiple_rect_detectors (
         boost::python::list& detectors,
-        boost::python::object img,
+        py::object img,
         const unsigned int upsampling_amount,
         const double adjust_threshold)
     {
@@ -269,13 +269,13 @@ namespace dlib
         simple_object_detector_py(simple_object_detector& _detector, unsigned int _upsampling_amount) :
             detector(_detector), upsampling_amount(_upsampling_amount) {}
 
-        std::vector<dlib::rectangle> run_detector1 (boost::python::object img,
+        std::vector<dlib::rectangle> run_detector1 (py::object img,
                                                     const unsigned int upsampling_amount_)
         {
             return run_detector_with_upscale2(detector, img, upsampling_amount_);
         }
 
-        std::vector<dlib::rectangle> run_detector2 (boost::python::object img)
+        std::vector<dlib::rectangle> run_detector2 (py::object img)
         {
             return run_detector_with_upscale2(detector, img, upsampling_amount);
         }

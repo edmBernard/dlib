@@ -20,7 +20,7 @@ class svm_struct_prob : public structural_svm_problem<matrix<double,0,1>, psi_ty
     typedef typename base::scalar_type scalar_type;
 public:
     svm_struct_prob (
-        boost::python::object& problem_,
+        py::object& problem_,
         long num_dimensions_,
         long num_samples_
     ) : 
@@ -50,7 +50,7 @@ public:
         feature_vector_type& psi
     ) const 
     {
-        boost::python::object res = problem.attr("separation_oracle")(idx,boost::ref(current_solution));
+        py::object res = problem.attr("separation_oracle")(idx,boost::ref(current_solution));
         pyassert(len(res) == 2, "separation_oracle() must return two objects, the loss and the psi vector");
         // let the user supply the output arguments in any order.
         if (boost::python::extract<double>(res[0]).check())
@@ -69,14 +69,14 @@ private:
 
     const long num_dimensions;
     const long num_samples;
-    boost::python::object& problem;
+    py::object& problem;
 };
 
 // ----------------------------------------------------------------------------------------
 
 template <typename psi_type>
 matrix<double,0,1> solve_structural_svm_problem_impl(
-    boost::python::object problem
+    py::object problem
 )
 {
     const double C = boost::python::extract<double>(problem.attr("C"));
@@ -129,7 +129,7 @@ matrix<double,0,1> solve_structural_svm_problem_impl(
 // ----------------------------------------------------------------------------------------
 
 matrix<double,0,1> solve_structural_svm_problem(
-    boost::python::object problem
+    py::object problem
 )
 {
     // Check if the python code is using sparse or dense vectors to represent PSI()
