@@ -182,7 +182,7 @@ boost::python::tuple get_matrix_size(matrix<double>& m)
     return boost::python::make_tuple(m.nr(), m.nc());
 }
 
-void bind_matrix(py::model& m)
+void bind_matrix(py::module& m)
 {
     py::class_<mat_row>(m, "_row")
         .def("__len__", &mat_row__len__)

@@ -153,7 +153,7 @@ inline double test_shape_predictor_with_images_no_scales_py (
 
 // ----------------------------------------------------------------------------------------
 
-void bind_shape_predictors(py::model& m)
+void bind_shape_predictors(py::module& m)
 {
     {
     typedef full_object_detection type;

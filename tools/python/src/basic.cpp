@@ -149,7 +149,7 @@ unsigned long range_len(const std::pair<unsigned long, unsigned long>& r)
 template <typename T>
 void resize(T& v, unsigned long n) { v.resize(n); }
 
-void bind_basic_types(py::model& m) 
+void bind_basic_types(py::module& m) 
 {
     py::class_<std::vector<double> >(m, "array", "This object represents a 1D array of floating point numbers. "
         "Moreover, it binds directly to the C++ type std::vector<double>.", py::init<>() 

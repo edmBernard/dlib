@@ -67,7 +67,7 @@ string print_rectangle_repr(const rect_type& r)
 
 // ----------------------------------------------------------------------------------------
 
-void bind_rectangles(py::model& m)
+void bind_rectangles(py::module& m)
 {
     {
     typedef rectangle type;

@@ -165,7 +165,7 @@ const binary_test _cross_validate_trainer_t (
 
 // ----------------------------------------------------------------------------------------
 
-void bind_svm_c_trainer(py::model& m)
+void bind_svm_c_trainer(py::module& m)
 {
     {
         typedef svm_c_trainer<radial_basis_kernel<sample_type> > T;

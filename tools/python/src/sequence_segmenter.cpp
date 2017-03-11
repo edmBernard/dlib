@@ -776,7 +776,7 @@ const segmenter_test cross_validate_sequence_segmenter2 (
 
 // ----------------------------------------------------------------------------------------
 
-void bind_sequence_segmenter(py::model& m)
+void bind_sequence_segmenter(py::module& m)
 {
     py::class_<segmenter_params>(m, "segmenter_params",
 "This class is used to define all the optional parameters to the    \n\

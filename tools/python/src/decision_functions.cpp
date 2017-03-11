@@ -157,7 +157,7 @@ ranking_test _test_ranking_function2 (
 ) { return ranking_test(test_ranking_function(funct, sample)); }
 
 
-void bind_decision_functions(py::model& m)
+void bind_decision_functions(py::module& m)
 {
     add_linear_df<linear_kernel<sample_type> >("_decision_function_linear");
     add_linear_df<sparse_linear_kernel<sparse_vect> >("_decision_function_sparse_linear");

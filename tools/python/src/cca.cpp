@@ -53,7 +53,7 @@ matrix<double,0,1> apply_cca_transform (
     return sparse_matrix_vector_multiply(trans(m), v);
 }
 
-void bind_cca(py::model& m)
+void bind_cca(py::module& m)
 {
     py::class_<cca_outputs>(m, "cca_outputs")
         .add_property("correlations", &cca_outputs::correlations)

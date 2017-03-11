@@ -143,7 +143,7 @@ private:
 
 // ----------------------------------------------------------------------------------------
 
-void bind_face_recognition(py::model& m)
+void bind_face_recognition(py::module& m)
 {
     {
     py::class_<face_recognition_model_v1>(m, "face_recognition_model_v1", "This object maps human faces into 128D vectors where pictures of the same person are mapped near to each other and pictures of different people are mapped far apart.  The constructor loads the face recognition model from a file. The model file is available here: http://dlib.net/files/dlib_face_recognition_resnet_model_v1.dat.bz2", py::init<std::string>())

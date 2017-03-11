@@ -126,7 +126,7 @@ inline void find_candidate_object_locations_py (
 
 // ----------------------------------------------------------------------------------------
 
-void bind_object_detection(py::model& m)
+void bind_object_detection(py::module& m)
 {
     {
     typedef simple_object_detector_training_options type;

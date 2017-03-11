@@ -95,7 +95,7 @@ drectangle get_position (const correlation_tracker& tracker) { return tracker.ge
 
 // ----------------------------------------------------------------------------------------
 
-void bind_correlation_tracker(py::model& m)
+void bind_correlation_tracker(py::module& m)
 {
     {
     typedef correlation_tracker type;

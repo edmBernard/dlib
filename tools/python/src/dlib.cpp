@@ -5,30 +5,30 @@
 #include <pybind11/pybind11.h>
 namespace py = pybind11;
 
-void bind_matrix(py::model& m);
-void bind_vector(py::model& m);
-void bind_svm_c_trainer(py::model& m);
-void bind_decision_functions(py::model& m);
-void bind_basic_types(py::model& m);
-void bind_other(py::model& m);
-void bind_svm_rank_trainer(py::model& m);
-void bind_cca(py::model& m);
-void bind_sequence_segmenter(py::model& m);
-void bind_svm_struct(py::model& m);
-void bind_image_classes(py::model& m);
-void bind_rectangles(py::model& m);
-void bind_object_detection(py::model& m);
-void bind_shape_predictors(py::model& m);
-void bind_correlation_tracker(py::model& m);
-void bind_face_recognition(py::model& m);
+void bind_matrix(py::module& m);
+void bind_vector(py::module& m);
+void bind_svm_c_trainer(py::module& m);
+void bind_decision_functions(py::module& m);
+void bind_basic_types(py::module& m);
+void bind_other(py::module& m);
+void bind_svm_rank_trainer(py::module& m);
+void bind_cca(py::module& m);
+void bind_sequence_segmenter(py::module& m);
+void bind_svm_struct(py::module& m);
+void bind_image_classes(py::module& m);
+void bind_rectangles(py::module& m);
+void bind_object_detection(py::module& m);
+void bind_shape_predictors(py::module& m);
+void bind_correlation_tracker(py::module& m);
+void bind_face_recognition(py::module& m);
 
 #ifndef DLIB_NO_GUI_SUPPORT
-void bind_gui(py::model& m);
+void bind_gui(py::module& m);
 #endif
 
 PYBIND11_PLUGIN(dlib)
 {
-    py::model m("dlib", "dlib python binding");
+    py::module m("dlib", "dlib python binding");
     // Disable printing of the C++ function signature in the python __doc__ string
     // since it is full of huge amounts of template clutter.
     boost::python::docstring_options options(true,true,false);

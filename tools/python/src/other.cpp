@@ -85,7 +85,7 @@ void hit_enter_to_continue()
 
 // ----------------------------------------------------------------------------------------
 
-void bind_other(py::model& m)
+void bind_other(py::module& m)
 {
 
     m.def("max_cost_assignment", _max_cost_assignment, (py::arg("cost")),

@@ -142,7 +142,7 @@ matrix<double,0,1> solve_structural_svm_problem(
 
 // ----------------------------------------------------------------------------------------
 
-void bind_svm_struct(py::model& m)
+void bind_svm_struct(py::module& m)
 {
 
     m.def("solve_structural_svm_problem",solve_structural_svm_problem, (py::arg("problem")),

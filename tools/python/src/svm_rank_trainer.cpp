@@ -120,7 +120,7 @@ const ranking_test _cross_ranking_validate_trainer (
 
 // ----------------------------------------------------------------------------------------
 
-void bind_svm_rank_trainer(py::model& m)
+void bind_svm_rank_trainer(py::module& m)
 {
     py::class_<ranking_pair<sample_type> >(m, "ranking_pair")
         .add_property("relevant", &ranking_pair<sample_type>::relevant)

@@ -155,7 +155,7 @@ long point_x(const point& p) { return p.x(); }
 long point_y(const point& p) { return p.y(); }
 
 // ----------------------------------------------------------------------------------------
-void bind_vector(py::model& m)
+void bind_vector(py::module& m)
 {
     {
     py::class_<cv>(m, "vector", "This object represents the mathematical idea of a column vector.")

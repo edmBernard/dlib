@@ -25,7 +25,7 @@ string print_rgb_pixel_repr(const rgb_pixel& p)
 }
 
 // ----------------------------------------------------------------------------------------
-void bind_image_classes(py::model& m)
+void bind_image_classes(py::module& m)
 {
     py::class_<rgb_pixel>(m, "rgb_pixel")
         .def(py::init<unsigned char,unsigned char,unsigned char>( (py::arg("red"),py::arg("green"),py::arg("blue")) ))
