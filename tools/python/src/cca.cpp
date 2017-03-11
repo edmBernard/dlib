@@ -56,9 +56,9 @@ matrix<double,0,1> apply_cca_transform (
 void bind_cca(py::module& m)
 {
     py::class_<cca_outputs>(m, "cca_outputs")
-        .add_property("correlations", &cca_outputs::correlations)
-        .add_property("Ltrans", &cca_outputs::Ltrans)
-        .add_property("Rtrans", &cca_outputs::Rtrans);
+        .def_readwrite("correlations", &cca_outputs::correlations)
+        .def_readwrite("Ltrans", &cca_outputs::Ltrans)
+        .def_readwrite("Rtrans", &cca_outputs::Rtrans);
 
     m.def("max_index_plus_one", sparse_vector_max_index_plus_one, py::arg("v"),
 "ensures    \n\

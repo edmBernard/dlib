@@ -164,8 +164,8 @@ void bind_shape_predictors(py::module& m)
 "requires \n\
     - rect: dlib rectangle \n\
     - parts: list of dlib points")
-        .add_property("rect", &full_obj_det_get_rect, "Bounding box from the underlying detector. Parts can be outside box if appropriate.")
-        .add_property("num_parts", &full_obj_det_num_parts, "The number of parts of the object.")
+        .def_readwrite("rect", &full_obj_det_get_rect, "Bounding box from the underlying detector. Parts can be outside box if appropriate.")
+        .def_readwrite("num_parts", &full_obj_det_num_parts, "The number of parts of the object.")
         .def("part", &full_obj_det_part, (py::arg("idx")), "A single part of the object as a dlib point.")
         .def("parts", &full_obj_det_parts, "A vector of dlib points representing all of the parts.")
         .def_pickle(serialize_pickle<type>());
@@ -174,40 +174,40 @@ void bind_shape_predictors(py::module& m)
     typedef shape_predictor_training_options type;
     py::class_<type>(m, "shape_predictor_training_options",
         "This object is a container for the options to the train_shape_predictor() routine.")
-        .add_property("be_verbose", &type::be_verbose,
+        .def_readwrite("be_verbose", &type::be_verbose,
                                     &type::be_verbose,
                       "If true, train_shape_predictor() will print out a lot of information to stdout while training.")
-        .add_property("cascade_depth", &type::cascade_depth,
+        .def_readwrite("cascade_depth", &type::cascade_depth,
                                        &type::cascade_depth,
                       "The number of cascades created to train the model with.")
-        .add_property("tree_depth", &type::tree_depth,
+        .def_readwrite("tree_depth", &type::tree_depth,
                                     &type::tree_depth,
                       "The depth of the trees used in each cascade. There are pow(2, get_tree_depth()) leaves in each tree")
-        .add_property("num_trees_per_cascade_level", &type::num_trees_per_cascade_level,
+        .def_readwrite("num_trees_per_cascade_level", &type::num_trees_per_cascade_level,
                                                      &type::num_trees_per_cascade_level,
                       "The number of trees created for each cascade.")
-        .add_property("nu", &type::nu,
+        .def_readwrite("nu", &type::nu,
                             &type::nu,
                       "The regularization parameter.  Larger values of this parameter \
                        will cause the algorithm to fit the training data better but may also \
                        cause overfitting.  The value must be in the range (0, 1].")
-        .add_property("oversampling_amount", &type::oversampling_amount,
+        .def_readwrite("oversampling_amount", &type::oversampling_amount,
                                              &type::oversampling_amount,
                       "The number of randomly selected initial starting points sampled for each training example")
-        .add_property("feature_pool_size", &type::feature_pool_size,
+        .def_readwrite("feature_pool_size", &type::feature_pool_size,
                                            &type::feature_pool_size,
                       "Number of pixels used to generate features for the random trees.")
-        .add_property("lambda_param", &type::lambda_param,
+        .def_readwrite("lambda_param", &type::lambda_param,
                                 &type::lambda_param,
                       "Controls how tight the feature sampling should be. Lower values enforce closer features.")
-        .add_property("num_test_splits", &type::num_test_splits,
+        .def_readwrite("num_test_splits", &type::num_test_splits,
                                          &type::num_test_splits,
                       "Number of split features at each node to sample. The one that gives the best split is chosen.")
-        .add_property("feature_pool_region_padding", &type::feature_pool_region_padding,
+        .def_readwrite("feature_pool_region_padding", &type::feature_pool_region_padding,
                                                      &type::feature_pool_region_padding,
                       "Size of region within which to sample features for the feature pool, \
                       e.g a padding of 0.5 would cause the algorithm to sample pixels from a box that was 2x2 pixels")
-        .add_property("random_seed", &type::random_seed,
+        .def_readwrite("random_seed", &type::random_seed,
                                      &type::random_seed,
                       "The random seed used by the internal random number generator")
         .def("__str__", &::print_shape_predictor_training_options)

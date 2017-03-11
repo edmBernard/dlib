@@ -88,12 +88,12 @@ void add_ranker (
 )
 {
     py::class_<trainer>(name)
-        .add_property("epsilon", get_epsilon<trainer>, set_epsilon<trainer>)
-        .add_property("c", get_c<trainer>, set_c<trainer>)
-        .add_property("max_iterations", &trainer::get_max_iterations, &trainer::set_max_iterations)
-        .add_property("force_last_weight_to_1", &trainer::forces_last_weight_to_1, &trainer::force_last_weight_to_1)
-        .add_property("learns_nonnegative_weights", &trainer::learns_nonnegative_weights, &trainer::set_learns_nonnegative_weights)
-        .add_property("has_prior", &trainer::has_prior)
+        .def_readwrite("epsilon", get_epsilon<trainer>, set_epsilon<trainer>)
+        .def_readwrite("c", get_c<trainer>, set_c<trainer>)
+        .def_readwrite("max_iterations", &trainer::get_max_iterations, &trainer::set_max_iterations)
+        .def_readwrite("force_last_weight_to_1", &trainer::forces_last_weight_to_1, &trainer::force_last_weight_to_1)
+        .def_readwrite("learns_nonnegative_weights", &trainer::learns_nonnegative_weights, &trainer::set_learns_nonnegative_weights)
+        .def_readwrite("has_prior", &trainer::has_prior)
         .def("train", train1<trainer>)
         .def("train", train2<trainer>)
         .def("set_prior", &trainer::set_prior)
@@ -123,13 +123,13 @@ const ranking_test _cross_ranking_validate_trainer (
 void bind_svm_rank_trainer(py::module& m)
 {
     py::class_<ranking_pair<sample_type> >(m, "ranking_pair")
-        .add_property("relevant", &ranking_pair<sample_type>::relevant)
-        .add_property("nonrelevant", &ranking_pair<sample_type>::nonrelevant)
+        .def_readwrite("relevant", &ranking_pair<sample_type>::relevant)
+        .def_readwrite("nonrelevant", &ranking_pair<sample_type>::nonrelevant)
         .def_pickle(serialize_pickle<ranking_pair<sample_type> >());
 
     py::class_<ranking_pair<sparse_vect> >(m, "sparse_ranking_pair")
-        .add_property("relevant", &ranking_pair<sparse_vect>::relevant)
-        .add_property("nonrelevant", &ranking_pair<sparse_vect>::nonrelevant)
+        .def_readwrite("relevant", &ranking_pair<sparse_vect>::relevant)
+        .def_readwrite("nonrelevant", &ranking_pair<sparse_vect>::nonrelevant)
         .def_pickle(serialize_pickle<ranking_pair<sparse_vect> >());
 
     typedef std::vector<ranking_pair<sample_type> > ranking_pairs;

@@ -169,7 +169,7 @@ void bind_vector(py::module& m)
         .def("__getitem__", &cv__getitem__)
         .def("__getitem__", &cv__getitem2__)
         .def("__setitem__", &cv__setitem__)
-        .add_property("shape", &cv_get_matrix_size)
+        .def_readwrite("shape", &cv_get_matrix_size)
         .def_pickle(serialize_pickle<cv>());
 
     m.def("dot", dotprod, "Compute the dot product between two dense column vectors.");
@@ -180,8 +180,8 @@ void bind_vector(py::module& m)
             .def(py::init<long,long>((py::arg("x"), py::arg("y"))))
             .def("__repr__", &point__repr__)
             .def("__str__", &point__str__)
-            .add_property("x", &point_x, "The x-coordinate of the point.")
-            .add_property("y", &point_y, "The y-coordinate of the point.")
+            .def_readwrite("x", &point_x, "The x-coordinate of the point.")
+            .def_readwrite("y", &point_y, "The y-coordinate of the point.")
             .def_pickle(serialize_pickle<type>());
     }
     {

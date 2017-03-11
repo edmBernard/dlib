@@ -97,8 +97,8 @@ void add_linear_df (
     typedef decision_function<kernel_type> df_type;
     py::class_<df_type>(name.c_str())
         .def("__call__", predict<df_type>)
-        .add_property("weights", &get_weights<df_type>)
-        .add_property("bias", get_bias<df_type>, set_bias<df_type>)
+        .def_readwrite("weights", &get_weights<df_type>)
+        .def_readwrite("bias", get_bias<df_type>, set_bias<df_type>)
         .def_pickle(serialize_pickle<df_type>());
 }
 
@@ -230,25 +230,25 @@ void bind_decision_functions(py::module& m)
     py::class_<binary_test>(m, "_binary_test")
         .def("__str__", binary_test__str__)
         .def("__repr__", binary_test__repr__)
-        .add_property("class1_accuracy", &binary_test::class1_accuracy,
+        .def_readwrite("class1_accuracy", &binary_test::class1_accuracy,
             "A value between 0 and 1, measures accuracy on the +1 class.")
-        .add_property("class2_accuracy", &binary_test::class2_accuracy,
+        .def_readwrite("class2_accuracy", &binary_test::class2_accuracy,
             "A value between 0 and 1, measures accuracy on the -1 class.");
 
     py::class_<ranking_test>(m, "_ranking_test")
         .def("__str__", ranking_test__str__)
         .def("__repr__", ranking_test__repr__)
-        .add_property("ranking_accuracy", &ranking_test::ranking_accuracy,
+        .def_readwrite("ranking_accuracy", &ranking_test::ranking_accuracy,
             "A value between 0 and 1, measures the fraction of times a relevant sample was ordered before a non-relevant sample.")
-        .add_property("mean_ap", &ranking_test::mean_ap,
+        .def_readwrite("mean_ap", &ranking_test::mean_ap,
             "A value between 0 and 1, measures the mean average precision of the ranking.");
 
     py::class_<regression_test>(m, "_regression_test")
         .def("__str__", regression_test__str__)
         .def("__repr__", regression_test__repr__)
-        .add_property("mean_squared_error", &regression_test::mean_squared_error,
+        .def_readwrite("mean_squared_error", &regression_test::mean_squared_error,
             "The mean squared error of a regression function on a dataset.")
-        .add_property("R_squared", &regression_test::R_squared,
+        .def_readwrite("R_squared", &regression_test::R_squared,
             "A value between 0 and 1, measures the squared correlation between the output of a \n"
             "regression function and the target values.");
 }

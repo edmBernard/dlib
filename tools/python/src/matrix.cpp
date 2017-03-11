@@ -204,7 +204,7 @@ void bind_matrix(py::module& m)
         .def("nc", &matrix<double>::nc, "Return the number of columns in the matrix.")
         .def("__len__", &matrix_double__len__)
         .def("__getitem__", &matrix_double__getitem__,  boost::python::with_custodian_and_ward_postcall<0,1>())
-        .add_property("shape", &get_matrix_size)
+        .def_readwrite("shape", &get_matrix_size)
         .def_pickle(serialize_pickle<matrix<double> >());
 }
 

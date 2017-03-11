@@ -132,34 +132,34 @@ void bind_object_detection(py::module& m)
     typedef simple_object_detector_training_options type;
     py::class_<type>(m, "simple_object_detector_training_options",
         "This object is a container for the options to the train_simple_object_detector() routine.")
-        .add_property("be_verbose", &type::be_verbose,
+        .def_readwrite("be_verbose", &type::be_verbose,
                                     &type::be_verbose,
 "If true, train_simple_object_detector() will print out a lot of information to the screen while training.")
-        .add_property("add_left_right_image_flips", &type::add_left_right_image_flips,
+        .def_readwrite("add_left_right_image_flips", &type::add_left_right_image_flips,
                                                     &type::add_left_right_image_flips,
 "if true, train_simple_object_detector() will assume the objects are \n\
 left/right symmetric and add in left right flips of the training \n\
 images.  This doubles the size of the training dataset.")
-        .add_property("detection_window_size", &type::detection_window_size,
+        .def_readwrite("detection_window_size", &type::detection_window_size,
                                                &type::detection_window_size,
                                                "The sliding window used will have about this many pixels inside it.")
-        .add_property("C", &type::C,
+        .def_readwrite("C", &type::C,
                            &type::C,
 "C is the usual SVM C regularization parameter.  So it is passed to \n\
 structural_object_detection_trainer::set_c().  Larger values of C \n\
 will encourage the trainer to fit the data better but might lead to \n\
 overfitting.  Therefore, you must determine the proper setting of \n\
 this parameter experimentally.")
-        .add_property("epsilon", &type::epsilon,
+        .def_readwrite("epsilon", &type::epsilon,
                                  &type::epsilon,
 "epsilon is the stopping epsilon.  Smaller values make the trainer's \n\
 solver more accurate but might take longer to train.")
-        .add_property("num_threads", &type::num_threads,
+        .def_readwrite("num_threads", &type::num_threads,
                                      &type::num_threads,
 "train_simple_object_detector() will use this many threads of \n\
 execution.  Set this to the number of CPU cores on your machine to \n\
 obtain the fastest training speed.")
-        .add_property("upsample_limit", &type::upsample_limit,
+        .def_readwrite("upsample_limit", &type::upsample_limit,
                                         &type::upsample_limit,
 "train_simple_object_detector() will upsample images if needed \n\
 no more than upsample_limit times. Value 0 will forbid trainer to \n\
@@ -171,9 +171,9 @@ Values higher than 2 (default) are not recommended.");
     {
     typedef simple_test_results type;
     py::class_<type>(m, "simple_test_results")
-        .add_property("precision", &type::precision)
-        .add_property("recall", &type::recall)
-        .add_property("average_precision", &type::average_precision)
+        .def_readwrite("precision", &type::precision)
+        .def_readwrite("recall", &type::recall)
+        .def_readwrite("average_precision", &type::average_precision)
         .def("__str__", &::print_simple_test_results);
     }
 

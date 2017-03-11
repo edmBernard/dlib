@@ -31,7 +31,7 @@ void bind_image_classes(py::module& m)
         .def(py::init<unsigned char,unsigned char,unsigned char>( (py::arg("red"),py::arg("green"),py::arg("blue")) ))
         .def("__str__", &print_rgb_pixel_str)
         .def("__repr__", &print_rgb_pixel_repr)
-        .add_property("red", &rgb_pixel::red)
-        .add_property("green", &rgb_pixel::green)
-        .add_property("blue", &rgb_pixel::blue);
+        .def_readwrite("red", &rgb_pixel::red)
+        .def_readwrite("green", &rgb_pixel::green)
+        .def_readwrite("blue", &rgb_pixel::blue);
 }
