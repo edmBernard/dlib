@@ -34,7 +34,13 @@ if(NOT ${DLIB_NO_GUI_SUPPORT})
 endif(NOT ${DLIB_NO_GUI_SUPPORT})
 
 add_python_module(dlib ${python_srcs})
+# pybind11_add_module(pydlib ${python_srcs})
 
-# When you run "make install" we will copy the compiled dlib.so (or dlib.pyd) 
+# add_library(pydlib SHARED ${SOURCES})
+# target_link_libraries(pydlib ${PYTHON_LIBRARIES} ${OpenCV_LIBS})
+# SET_TARGET_PROPERTIES(pydlib PROPERTIES PREFIX "")
+
+# When you run "make install" we will copy the compiled dlib.so (or dlib.pyd)
 # library file to the python_examples folder.
 install_dlib_to(../../python_examples)
+# install(TARGETS pydlib DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/python_examples)
