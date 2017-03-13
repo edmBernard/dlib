@@ -11,7 +11,7 @@ add_definitions(-DDLIB_VERSION=${DLIB_VERSION})
 set(python_srcs
    src/dlib.cpp
 #    src/matrix.cpp
-#    src/vector.cpp
+   src/vector.cpp
 #    src/svm_c_trainer.cpp
 #    src/svm_rank_trainer.cpp
 #    src/decision_functions.cpp

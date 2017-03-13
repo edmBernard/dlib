@@ -107,27 +107,38 @@ double cv__getitem__(cv& m, long r)
 }
 
 
-cv cv__getitem2__(cv& m, boost::python::slice r)
+cv cv__getitem2__(cv& m, py::slice r)
 {
-    boost::python::slice::range<cv::iterator> bounds;
-    bounds = r.get_indicies<>(m.begin(), m.end());
-    long num = (bounds.stop-bounds.start+1);
-    // round num up to the next multiple of bounds.step.
-    if ((num%bounds.step) != 0)
-        num += bounds.step - num%bounds.step;
+    // boost::python::slice::range<cv::iterator> bounds;
+    // bounds = r.get_indicies<>(m.begin(), m.end());
+    // long num = (bounds.stop-bounds.start+1);
+    // // round num up to the next multiple of bounds.step.
+    // if ((num%bounds.step) != 0)
+    //     num += bounds.step - num%bounds.step;
 
-    cv temp(num/bounds.step);
+    // cv temp(num/bounds.step);
 
-    if (temp.size() == 0)
-        return temp;
-    long ii = 0;
-    while(bounds.start != bounds.stop)
-    {
-        temp(ii++) = *bounds.start;
-        std::advance(bounds.start, bounds.step);
+    // if (temp.size() == 0)
+    //     return temp;
+    // long ii = 0;
+    // while(bounds.start != bounds.stop)
+    // {
+    //     temp(ii++) = *bounds.start;
+    //     std::advance(bounds.start, bounds.step);
+    // }
+    // temp(ii) = *bounds.start;
+    // return temp;
+
+    // from pybind11 example TODO: check if it really work
+    size_t start, stop, step, slicelength;
+    if (!r.compute(m.size(), &start, &stop, &step, &slicelength))
+        throw py::error_already_set();
+    cv *seq = new cv(slicelength);
+    for (size_t i=0; i<slicelength; ++i) {
+        (*seq)(i) = m(start); 
+        start += step;
     }
-    temp(ii) = *bounds.start;
-    return temp;
+    return *seq;
 }
 
 
@@ -170,7 +181,7 @@ void bind_vector(py::module& m)
         .def("__getitem__", &cv__getitem__)
         .def("__getitem__", &cv__getitem2__)
         .def("__setitem__", &cv__setitem__)
-        .def_readwrite("shape", &cv_get_matrix_size)
+        .def("shape", &cv_get_matrix_size)  // TODO: verify add_property but that only a getter
         // .def_pickle(serialize_pickle<cv>());
         ;
 
@@ -182,15 +193,15 @@ void bind_vector(py::module& m)
         .def(py::init<long, long>(), py::arg("x"), py::arg("y"))
         .def("__repr__", &point__repr__)
         .def("__str__", &point__str__)
-        .def_readwrite("x", &point_x, "The x-coordinate of the point.")
-        .def_readwrite("y", &point_y, "The y-coordinate of the point.")
+        .def("x", &point_x, "The x-coordinate of the point.")   // TODO: verify add_property but that only a getter
+        .def("y", &point_y, "The y-coordinate of the point.")   // TODO: verify add_property but that only a getter
         // .def_pickle(serialize_pickle<type>())
         ;
     }
     {
     typedef std::vector<point> type;
     py::class_<type>(m, "points", "An array of point objects.")
-        .def(init<type>())
+        .def(py::init<type>())
         .def("clear", &type::clear)
         .def("resize", resize<type>)
         // .def_pickle(serialize_pickle<type>())
