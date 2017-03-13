@@ -49,7 +49,7 @@ PYBIND11_PLUGIN(dlib)
     // bind_sequence_segmenter(m);
     // bind_svm_struct(m);
     // bind_image_classes(m);
-    // bind_rectangles(m);
+    bind_rectangles(m);
     // bind_object_detection(m);
     // bind_shape_predictors(m);
     // bind_correlation_tracker(m);

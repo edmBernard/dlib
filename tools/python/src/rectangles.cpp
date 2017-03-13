@@ -72,7 +72,7 @@ void bind_rectangles(py::module& m)
     {
     typedef rectangle type;
     py::class_<type>(m, "rectangle", "This object represents a rectangular area of an image.")
-        .def(py::init<long,long,long,long>( (py::arg("left"),py::arg("top"),py::arg("right"),py::arg("bottom")) ))
+        .def(py::init<long,long,long,long>(), py::arg("left"), py::arg("top"), py::arg("right"), py::arg("bottom"))
         .def("area",   &::area)
         .def("left",   &::left)
         .def("top",    &::top)
@@ -84,20 +84,20 @@ void bind_rectangles(py::module& m)
         .def("center", &::center<type>)
         .def("dcenter", &::dcenter<type>)
         .def("contains", &::contains<type>, py::arg("point"))
-        .def("contains", &::contains_xy<type>, (py::arg("x"), py::arg("y")))
-        .def("contains", &::contains_rec<type>, (py::arg("rectangle")))
-        .def("intersect", &::intersect<type>, (py::arg("rectangle")))
+        .def("contains", &::contains_xy<type>, py::arg("x"), py::arg("y"))
+        .def("contains", &::contains_rec<type>, py::arg("rectangle"))
+        .def("intersect", &::intersect<type>, py::arg("rectangle"))
         .def("__str__", &::print_rectangle_str<type>)
         .def("__repr__", &::print_rectangle_repr<type>)
-        .def(boost::python::self == boost::python::self)
-        .def(boost::python::self != boost::python::self)
+        // .def(boost::python::self == boost::python::self)  // TODO : don't know what is that
+        // .def(boost::python::self != boost::python::self)  // TODO : don't know what is that
         // .def_pickle(serialize_pickle<type>()  // TODO : pickle
-        );
+        ;
     }
     {
     typedef drectangle type;
     py::class_<type>(m, "drectangle", "This object represents a rectangular area of an image with floating point coordinates.")
-        .def(py::init<double,double,double,double>( (py::arg("left"),py::arg("top"),py::arg("right"),py::arg("bottom")) ))
+        .def(py::init<double,double,double,double>(), py::arg("left"),py::arg("top"),py::arg("right"),py::arg("bottom"))
         .def("area",   &::darea)
         .def("left",   &::dleft)
         .def("top",    &::dtop)
@@ -109,24 +109,24 @@ void bind_rectangles(py::module& m)
         .def("center", &::center<type>)
         .def("dcenter", &::dcenter<type>)
         .def("contains", &::contains<type>, py::arg("point"))
-        .def("contains", &::contains_xy<type>, (py::arg("x"), py::arg("y")))
-        .def("contains", &::contains_rec<type>, (py::arg("rectangle")))
-        .def("intersect", &::intersect<type>, (py::arg("rectangle")))
+        .def("contains", &::contains_xy<type>, py::arg("x"), py::arg("y"))
+        .def("contains", &::contains_rec<type>, py::arg("rectangle"))
+        .def("intersect", &::intersect<type>, py::arg("rectangle"))
         .def("__str__", &::print_rectangle_str<type>)
         .def("__repr__", &::print_rectangle_repr<type>)
-        .def(boost::python::self == boost::python::self)
-        .def(boost::python::self != boost::python::self)
+        // .def(boost::python::self == boost::python::self) // TODO : don't know what is that
+        // .def(boost::python::self != boost::python::self) // TODO : don't know what is that
         // .def_pickle(serialize_pickle<type>()  // TODO : pickle
-        );
+        ;
     }
     {
     typedef std::vector<rectangle> type;
     py::class_<type>(m, "rectangles", "An array of rectangle objects.")
-        .def(boost::python::vector_indexing_suite<type>())
+        // .def(boost::python::vector_indexing_suite<type>()) // TODO pybind11 automatique conversion from vector
         .def("clear", &type::clear)
         .def("resize", resize<type>)
         //.def_pickle(serialize_pickle<type>()  // TODO : pickle
-        );
+        ;
     }
 }
 
