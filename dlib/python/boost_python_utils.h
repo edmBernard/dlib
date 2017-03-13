@@ -29,37 +29,38 @@ inline bool hasattr(
 
 // ----------------------------------------------------------------------------------------
 
-template <typename T>
-std::vector<T> python_list_to_vector (
-    const py::object& obj
-)
-/*!
-    ensures
-        - converts a python object into a std::vector<T> and returns it.
-!*/
-{
-    std::vector<T> vect(len(obj));
-    for (unsigned long i = 0; i < vect.size(); ++i)
-    {
-        vect[i] = obj[i].cast<T>()
-    }
-    return vect;
-}
+// python list <-> cpp vector automatique conversion by pybind11
+// template <typename T>
+// std::vector<T> python_list_to_vector (
+//     const py::object& obj
+// )
+// /*!
+//     ensures
+//         - converts a python object into a std::vector<T> and returns it.
+// !*/
+// {
+//     std::vector<T> vect(len(obj));
+//     for (unsigned long i = 0; i < vect.size(); ++i)
+//     {
+//         vect[i] = obj[i].cast<T>()
+//     }
+//     return vect;
+// }
 
-template <typename T>
-py::list vector_to_python_list (
-    const std::vector<T>& vect
-)
-/*!
-    ensures
-        - converts a std::vector<T> into a python list object.
-!*/
-{
-    py::list obj;
-    for (unsigned long i = 0; i < vect.size(); ++i)
-        obj.append(vect[i]);
-    return obj;
-}
+// template <typename T>
+// py::list vector_to_python_list (
+//     const std::vector<T>& vect
+// )
+// /*!
+//     ensures
+//         - converts a std::vector<T> into a python list object.
+// !*/
+// {
+//     py::list obj;
+//     for (unsigned long i = 0; i < vect.size(); ++i)
+//         obj.append(vect[i]);
+//     return obj;
+// }
 
 // ----------------------------------------------------------------------------------------
 

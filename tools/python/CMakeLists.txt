@@ -10,27 +10,27 @@ add_definitions(-DDLIB_VERSION=${DLIB_VERSION})
 # Tell cmake to compile all these cpp files into a dlib python module.
 set(python_srcs
    src/dlib.cpp
-   src/matrix.cpp
-   src/vector.cpp
-   src/svm_c_trainer.cpp
-   src/svm_rank_trainer.cpp
-   src/decision_functions.cpp
-   src/other.cpp
-   src/basic.cpp
-   src/cca.cpp
-   src/sequence_segmenter.cpp
-   src/svm_struct.cpp
-   src/image.cpp
-   src/rectangles.cpp
-   src/object_detection.cpp
-   src/shape_predictor.cpp
-   src/correlation_tracker.cpp
-   src/face_recognition.cpp
+#    src/matrix.cpp
+#    src/vector.cpp
+#    src/svm_c_trainer.cpp
+#    src/svm_rank_trainer.cpp
+#    src/decision_functions.cpp
+#    src/other.cpp
+#    src/basic.cpp
+#    src/cca.cpp
+#    src/sequence_segmenter.cpp
+#    src/svm_struct.cpp
+#    src/image.cpp
+#    src/rectangles.cpp
+#    src/object_detection.cpp
+#    src/shape_predictor.cpp
+#    src/correlation_tracker.cpp
+#    src/face_recognition.cpp
 )
 
 # Only add the GUI module if requested
 if(NOT ${DLIB_NO_GUI_SUPPORT})
-   list(APPEND python_srcs src/gui.cpp)
+#    list(APPEND python_srcs src/gui.cpp)
 endif(NOT ${DLIB_NO_GUI_SUPPORT})
 
 add_python_module(dlib ${python_srcs})

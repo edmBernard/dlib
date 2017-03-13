@@ -91,7 +91,8 @@ void bind_rectangles(py::module& m)
         .def("__repr__", &::print_rectangle_repr<type>)
         .def(boost::python::self == boost::python::self)
         .def(boost::python::self != boost::python::self)
-        .def_pickle(serialize_pickle<type>());
+        // .def_pickle(serialize_pickle<type>()  // TODO : pickle
+        );
     }
     {
     typedef drectangle type;
@@ -115,7 +116,8 @@ void bind_rectangles(py::module& m)
         .def("__repr__", &::print_rectangle_repr<type>)
         .def(boost::python::self == boost::python::self)
         .def(boost::python::self != boost::python::self)
-        .def_pickle(serialize_pickle<type>());
+        // .def_pickle(serialize_pickle<type>()  // TODO : pickle
+        );
     }
     {
     typedef std::vector<rectangle> type;
@@ -123,7 +125,8 @@ void bind_rectangles(py::module& m)
         .def(boost::python::vector_indexing_suite<type>())
         .def("clear", &type::clear)
         .def("resize", resize<type>)
-        .def_pickle(serialize_pickle<type>());
+        //.def_pickle(serialize_pickle<type>()  // TODO : pickle
+        );
     }
 }
 

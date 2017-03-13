@@ -38,24 +38,24 @@ PYBIND11_PLUGIN(dlib)
 
     m.attr("__version__") = DLIB_QUOTE_STRING(DLIB_VERSION);
     
-    bind_matrix(m);
-    bind_vector(m);
-    bind_svm_c_trainer(m);
-    bind_decision_functions(m);
-    bind_basic_types(m);
-    bind_other(m);
-    bind_svm_rank_trainer(m);
-    bind_cca(m);
-    bind_sequence_segmenter(m);
-    bind_svm_struct(m);
-    bind_image_classes(m);
-    bind_rectangles(m);
-    bind_object_detection(m);
-    bind_shape_predictors(m);
-    bind_correlation_tracker(m);
-    bind_face_recognition(m);
+    // bind_matrix(m);
+    // bind_vector(m);
+    // bind_svm_c_trainer(m);
+    // bind_decision_functions(m);
+    // bind_basic_types(m);
+    // bind_other(m);
+    // bind_svm_rank_trainer(m);
+    // bind_cca(m);
+    // bind_sequence_segmenter(m);
+    // bind_svm_struct(m);
+    // bind_image_classes(m);
+    // bind_rectangles(m);
+    // bind_object_detection(m);
+    // bind_shape_predictors(m);
+    // bind_correlation_tracker(m);
+    // bind_face_recognition(m);
 #ifndef DLIB_NO_GUI_SUPPORT
-    bind_gui(m);
+    // bind_gui(m);
 #endif
 
     return m.ptr();
