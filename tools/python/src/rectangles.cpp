@@ -2,7 +2,7 @@
 // License: Boost Software License   See LICENSE.txt for the full license.
 
 #include <dlib/python.h>
-#include <boost/python/args.hpp>
+// #include <boost/python/args.hpp>
 #include <dlib/geometry.h>
 #include "indexing.h"
 
@@ -89,15 +89,15 @@ void bind_rectangles(py::module& m)
         .def("intersect", &::intersect<type>, py::arg("rectangle"))
         .def("__str__", &::print_rectangle_str<type>)
         .def("__repr__", &::print_rectangle_repr<type>)
-        // .def(boost::python::self == boost::python::self)  // TODO : don't know what is that
-        // .def(boost::python::self != boost::python::self)  // TODO : don't know what is that
+        .def(py::self == py::self)
+        .def(py::self != py::self)
         // .def_pickle(serialize_pickle<type>()  // TODO : pickle
         ;
     }
     {
     typedef drectangle type;
     py::class_<type>(m, "drectangle", "This object represents a rectangular area of an image with floating point coordinates.")
-        .def(py::init<double,double,double,double>(), py::arg("left"),py::arg("top"),py::arg("right"),py::arg("bottom"))
+        .def(py::init<double, double, double, double>(), py::arg("left"), py::arg("top"), py::arg("right"), py::arg("bottom"))
         .def("area",   &::darea)
         .def("left",   &::dleft)
         .def("top",    &::dtop)
@@ -114,8 +114,8 @@ void bind_rectangles(py::module& m)
         .def("intersect", &::intersect<type>, py::arg("rectangle"))
         .def("__str__", &::print_rectangle_str<type>)
         .def("__repr__", &::print_rectangle_repr<type>)
-        // .def(boost::python::self == boost::python::self) // TODO : don't know what is that
-        // .def(boost::python::self != boost::python::self) // TODO : don't know what is that
+        .def(py::self == py::self)
+        .def(py::self != py::self) // TODO : don't know what is that
         // .def_pickle(serialize_pickle<type>()  // TODO : pickle
         ;
     }
