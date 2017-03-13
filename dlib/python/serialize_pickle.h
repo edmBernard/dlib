@@ -49,17 +49,8 @@ namespace py = pybind11;
 //         // UTF-8 encodings.  So instead we access the python C interface directly and use
 //         // bytes objects.  However, we keep the deserialization code that worked with str
 //         // for backwards compatibility with previously pickled files.
-//         bool castable = true; // TODO find better way
-//         try 
-//         { 
-//             py::cast(state[0]);
-//         } 
-//         catch ( const py::cast_error & ) 
-//         { 
-//             castable = false; 
-//         } 
 
-//         if (castable)
+//         if (py::extract<py::str>(state[0]))
 //         {
 //             py::str data = py::cast(state[0]);
 //             std::string temp(data.cast<const char*>(), len(data));

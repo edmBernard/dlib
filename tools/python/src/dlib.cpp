@@ -39,7 +39,7 @@ PYBIND11_PLUGIN(dlib)
     m.attr("__version__") = DLIB_QUOTE_STRING(DLIB_VERSION);
     
     // bind_matrix(m);
-    // bind_vector(m);
+    bind_vector(m);
     // bind_svm_c_trainer(m);
     // bind_decision_functions(m);
     // bind_basic_types(m);

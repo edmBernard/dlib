@@ -3,9 +3,8 @@
 
 #include <dlib/python.h>
 #include <memory>
-#include <tuple>
 #include <dlib/matrix.h>
-#include <boost/python/slice.hpp>
+// #include <boost/python/slice.hpp>
 #include <dlib/geometry/vector.h>
 #include "indexing.h"
 
@@ -55,10 +54,10 @@ string cv__repr__ (const cv& v)
 
 std::shared_ptr<cv> cv_from_object(py::object obj)
 {
-    py::cast(long) thesize(obj); // TODO not sure
+    py::extract<long> thesize(obj);
     if (thesize.check())
     {
-        long nr = thesize;
+        long nr = thesize();
         std::shared_ptr<cv> temp(new cv(nr));
         *temp = 0;
         return temp;
@@ -69,7 +68,7 @@ std::shared_ptr<cv> cv_from_object(py::object obj)
         std::shared_ptr<cv> temp(new cv(nr));
         for ( long r = 0; r < nr; ++r)
         {
-            (*temp)(r) = obj[r].cast<double>();
+            (*temp)(r) = py::extract<std::vector<double>>(obj)()[r];  // automatic conversion in vector by pybind11 I hope not the same thing than boost
         }
         return temp;
     }
@@ -131,6 +130,7 @@ cv cv__getitem2__(cv& m, boost::python::slice r)
     return temp;
 }
 
+
 py::tuple cv_get_matrix_size(cv& m)
 {
     return py::make_tuple(m.nr(), m.nc());
@@ -160,10 +160,10 @@ void bind_vector(py::module& m)
 {
     {
     py::class_<cv>(m, "vector", "This object represents the mathematical idea of a column vector.")
-        .def(py::init<>())
+        // .def(py::init<py::object>())  // implicite conversion between py::object and vector
+        .def("__init__", &cv_from_object)
         .def("set_size", &cv_set_size)
         .def("resize", &cv_set_size)
-        .def("__init__", boost::python::make_constructor(&cv_from_object))
         .def("__repr__", &cv__repr__)
         .def("__str__", &cv__str__)
         .def("__len__", &cv__len__)
@@ -171,26 +171,29 @@ void bind_vector(py::module& m)
         .def("__getitem__", &cv__getitem2__)
         .def("__setitem__", &cv__setitem__)
         .def_readwrite("shape", &cv_get_matrix_size)
-        .def_pickle(serialize_pickle<cv>());
+        // .def_pickle(serialize_pickle<cv>());
+        ;
 
     m.def("dot", dotprod, "Compute the dot product between two dense column vectors.");
     }
     {
     typedef point type;
     py::class_<type>(m, "point", "This object represents a single point of integer coordinates that maps directly to a dlib::point.")
-            .def(py::init<long,long>((py::arg("x"), py::arg("y"))))
-            .def("__repr__", &point__repr__)
-            .def("__str__", &point__str__)
-            .def_readwrite("x", &point_x, "The x-coordinate of the point.")
-            .def_readwrite("y", &point_y, "The y-coordinate of the point.")
-            .def_pickle(serialize_pickle<type>());
+        .def(py::init<long, long>(), py::arg("x"), py::arg("y"))
+        .def("__repr__", &point__repr__)
+        .def("__str__", &point__str__)
+        .def_readwrite("x", &point_x, "The x-coordinate of the point.")
+        .def_readwrite("y", &point_y, "The y-coordinate of the point.")
+        // .def_pickle(serialize_pickle<type>())
+        ;
     }
     {
     typedef std::vector<point> type;
     py::class_<type>(m, "points", "An array of point objects.")
-        .def(boost::python::vector_indexing_suite<type>())
+        .def(init<type>())
         .def("clear", &type::clear)
         .def("resize", resize<type>)
-        .def_pickle(serialize_pickle<type>());
+        // .def_pickle(serialize_pickle<type>())
+        ;
     }
 }

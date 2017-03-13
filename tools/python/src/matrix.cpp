@@ -51,7 +51,7 @@ std::shared_ptr<matrix<double> > make_matrix_from_size(long nr, long nc)
 
 std::shared_ptr<matrix<double> > from_object(py::object obj)
 {
-    py::tuple s = boost::python::extract<py::tuple>(obj.attr("shape")); // TODO cast in which side py<->cpp
+    py::tuple s = py::extract<py::tuple>(obj.attr("shape"))();
     if (py::len(s) != 2)
     {
         PyErr_SetString( PyExc_IndexError, "Input must be a matrix or some kind of 2D array." 
@@ -76,32 +76,22 @@ std::shared_ptr<matrix<double> > from_list(py::list l)
 {
     const long nr = py::len(l);
 
-    bool castable = true; // TODO find better way
-    try 
-    { 
-        py::cast(l[0]);
-    } 
-    catch ( const py::cast_error & ) 
-    { 
-        castable = false; 
-    }
-
-    if (castable)
+    if (py::extract<py::list>(l[0]).check())
     {
         const long nc = py::len(l[0]);
         // make sure all the other rows have the same length
         for (long r = 1; r < nr; ++r)
             pyassert(py::len(l[r]) == nc, "All rows of a matrix must have the same number of columns.");
 
-
         std::shared_ptr<matrix<double> > temp(new matrix<double>(nr,nc));
         for ( long r = 0; r < nr; ++r)
         {
             for (long c = 0; c < nc; ++c)
             {
-                (*temp)(r,c) = l[r][c].cast<double>();
+                (*temp)(r,c) = py::extract<std::vector<std::vector<double>>>(l)()[r][c];  // automatic conversion in vector by pybind11 I hope not the same thing than boost
             }
         }
+       
         return temp;
     }
     else
@@ -207,9 +197,9 @@ void bind_matrix(py::module& m)
                                 "Moreover, it binds directly to the C++ type dlib::matrix<double>.")
         .def(py::init<>())
         // .def("__init__", boost::python::make_constructor(&make_matrix_from_size))
+        // .def("__init__", boost::python::make_constructor(&from_list))
+        // .def("__init__", boost::python::make_constructor(&from_object))
         .def("set_size", &matrix_set_size, (py::arg("rows"), py::arg("cols")), "Set the size of the matrix to the given number of rows and columns.")
-        .def("__init__", boost::python::make_constructor(&from_object))
-        .def("__init__", boost::python::make_constructor(&from_list))
         .def("__repr__", &matrix_double__repr__)
         .def("__str__", &matrix_double__str__)
         .def("nr", &matrix<double>::nr, "Return the number of rows in the matrix.")
@@ -217,6 +207,6 @@ void bind_matrix(py::module& m)
         .def("__len__", &matrix_double__len__)
         .def("__getitem__", &matrix_double__getitem__,  boost::python::with_custodian_and_ward_postcall<0,1>())
         .def_readwrite("shape", &get_matrix_size)
-        .def_pickle(serialize_pickle<matrix<double> >());
+        // .def_pickle(serialize_pickle<matrix<double> >());
 }
 

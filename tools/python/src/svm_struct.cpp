@@ -54,17 +54,7 @@ public:
         pyassert(len(res) == 2, "separation_oracle() must return two objects, the loss and the psi vector");
         // let the user supply the output arguments in any order.
 
-        bool castable = true; // TODO find better way
-        try 
-        { 
-            res[0].cast<double>();
-        } 
-        catch ( const py::cast_error & ) 
-        { 
-            castable = false; 
-        } 
-
-        if (castable)
+        if (py::extract<double>(res[0]).check())
         {
             loss = res[0].cast<double>();
             psi = res[1].cast<feature_vector_type&>();

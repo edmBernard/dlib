@@ -14,6 +14,35 @@
 
 namespace py = pybind11;
 
+
+namespace pybind11 {
+// https://sourceforge.net/p/ngsolve/git/ci/master/tree/ngstd/python_ngstd.hpp#l45
+template<typename T>
+bool CheckCast( py::handle obj ) {
+  try{
+    obj.cast<T>();
+    return true;
+  }
+  catch (py::cast_error &e) {
+    return false;
+  }
+  catch (py::error_already_set &e) {
+    return false;
+  }
+}
+
+template <typename T>
+struct extract
+{
+py::handle obj;
+extract( py::handle aobj ) : obj(aobj) {}
+
+bool check() { return CheckCast<T>(obj); }
+T operator()() { return obj.cast<T>(); }
+};
+
+}
+
 inline bool hasattr(
     py::object obj, 
     const std::string& attr_name

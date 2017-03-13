@@ -18,10 +18,10 @@ namespace py = pybind11;
 
 std::shared_ptr<std::vector<double> > array_from_object(py::object obj)
 {
-    py::cast(long) thesize(obj); // TODO not sure
+    py::extract<long> thesize(obj);
     if (thesize.check())
     {
-        long nr = thesize;
+        long nr = thesize();
         std::shared_ptr<std::vector<double> > temp(new std::vector<double>(nr));
         return temp;
     }
