@@ -68,7 +68,7 @@ std::shared_ptr<cv> cv_from_object(py::object obj)
         std::shared_ptr<cv> temp(new cv(nr));
         for ( long r = 0; r < nr; ++r)
         {
-            (*temp)(r) = py::extract<std::vector<double>>(obj)()[r];  // automatic conversion in vector by pybind11 I hope not the same thing than boost
+            (*temp)(r) = py::extract<std::vector<double>>(obj)()[r];  // automatic conversion in vector by pybind11 I hope, not the same thing than boost
         }
         return temp;
     }

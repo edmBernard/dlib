@@ -16,7 +16,7 @@ set(python_srcs
 #    src/svm_rank_trainer.cpp
 #    src/decision_functions.cpp
 #    src/other.cpp
-#    src/basic.cpp
+   src/basic.cpp
 #    src/cca.cpp
 #    src/sequence_segmenter.cpp
 #    src/svm_struct.cpp

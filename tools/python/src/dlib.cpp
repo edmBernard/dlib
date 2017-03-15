@@ -42,7 +42,7 @@ PYBIND11_PLUGIN(dlib)
     bind_vector(m);
     // bind_svm_c_trainer(m);
     // bind_decision_functions(m);
-    // bind_basic_types(m);
+    bind_basic_types(m);
     // bind_other(m);
     // bind_svm_rank_trainer(m);
     // bind_cca(m);
