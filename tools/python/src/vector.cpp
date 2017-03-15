@@ -129,7 +129,7 @@ cv cv__getitem2__(cv& m, py::slice r)
     // temp(ii) = *bounds.start;
     // return temp;
 
-    // from pybind11 example TODO: check if it really work
+    // from pybind11 test_sequences_and_iterators TODO: check if it really work
     size_t start, stop, step, slicelength;
     if (!r.compute(m.size(), &start, &stop, &step, &slicelength))
         throw py::error_already_set();

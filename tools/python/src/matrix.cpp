@@ -66,7 +66,7 @@ std::shared_ptr<matrix<double> > from_object(py::object obj)
     {
         for (long c = 0; c < nc; ++c)
         {
-            (*temp)(r,c) = obj[py::make_tuple(r,c)].cast<double>();
+            (*temp)(r,c) = obj[py::make_tuple(r,c)].cast<double>(); // automatic conversion in vector by pybind11 I hope, not the same thing than boost
         }
     }
     return temp;
@@ -88,7 +88,7 @@ std::shared_ptr<matrix<double> > from_list(py::list l)
         {
             for (long c = 0; c < nc; ++c)
             {
-                (*temp)(r,c) = py::extract<std::vector<std::vector<double>>>(l)()[r][c];  // automatic conversion in vector by pybind11 I hope not the same thing than boost
+                (*temp)(r,c) = py::extract<std::vector<std::vector<double>>>(l)()[r][c];  // automatic conversion in vector by pybind11 I hope, not the same thing than boost
             }
         }
        
@@ -193,20 +193,21 @@ void bind_matrix(py::module& m)
         .def("__setitem__", &mat_row__setitem__)
         .def("__getitem__", &mat_row__getitem__);
 
-    py::class_<matrix<double> >(m, "matrix", "This object represents a dense 2D matrix of floating point numbers."
-                                "Moreover, it binds directly to the C++ type dlib::matrix<double>.")
+    py::class_<matrix<double>, std::shared_ptr<matrix<double> > >(m, "matrix", "This object represents a dense 2D matrix of floating point numbers."
+            "Moreover, it binds directly to the C++ type dlib::matrix<double>.")
         .def(py::init<>())
-        // .def("__init__", boost::python::make_constructor(&make_matrix_from_size))
-        // .def("__init__", boost::python::make_constructor(&from_list))
-        // .def("__init__", boost::python::make_constructor(&from_object))
-        .def("set_size", &matrix_set_size, (py::arg("rows"), py::arg("cols")), "Set the size of the matrix to the given number of rows and columns.")
+        .def("__init__", &make_matrix_from_size)
+        .def("__init__", &from_list)
+        .def("__init__", &from_object)
+        .def("set_size", &matrix_set_size, py::arg("rows"), py::arg("cols"), "Set the size of the matrix to the given number of rows and columns.")
         .def("__repr__", &matrix_double__repr__)
         .def("__str__", &matrix_double__str__)
         .def("nr", &matrix<double>::nr, "Return the number of rows in the matrix.")
         .def("nc", &matrix<double>::nc, "Return the number of columns in the matrix.")
         .def("__len__", &matrix_double__len__)
-        .def("__getitem__", &matrix_double__getitem__,  boost::python::with_custodian_and_ward_postcall<0,1>())
-        .def_readwrite("shape", &get_matrix_size)
+        .def("__getitem__", &matrix_double__getitem__, py::keep_alive<0, 1>())
+        .def("shape", &get_matrix_size) // TODO: verify add_property but that only a getter
         // .def_pickle(serialize_pickle<matrix<double> >());
+        ;
 }
 

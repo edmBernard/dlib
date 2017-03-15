@@ -10,7 +10,7 @@ add_definitions(-DDLIB_VERSION=${DLIB_VERSION})
 # Tell cmake to compile all these cpp files into a dlib python module.
 set(python_srcs
    src/dlib.cpp
-#    src/matrix.cpp
+   src/matrix.cpp
    src/vector.cpp
 #    src/svm_c_trainer.cpp
 #    src/svm_rank_trainer.cpp
